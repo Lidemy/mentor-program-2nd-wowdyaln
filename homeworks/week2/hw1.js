@@ -15,7 +15,4 @@ function stars(n) {
   return newAry
 }
 
-a= stars(10)
-console.log(a);
-
 module.exports = stars;
