@@ -47,12 +47,11 @@ function add(a, b) {
       answer.unshift(sum)
       carry = true
     }
-
     if (i === arrA.length - 1 && carry === true) {
       answer.unshift(1)
     }
   }
-  ansString = answer.map( digi => digi.toString() )
+  let ansString = answer.map( digi => digi.toString() )
   return ansString.join("")
 }
 
