@@ -67,6 +67,7 @@ html,body {
   font-size: 20px;
   border-radius: 4px;
   transition: background 0.3s;
+  margin-top: 10px;
 }
 
 .hero-unit__button:hover {
@@ -76,29 +77,32 @@ html,body {
 
 .blocks {
   margin: 50px 0px;
-  /* display: flex;
-  overflow: hidden; */
+  display: flex;
+  /* overflow: hidden; */
 }
 
 .block {
-  /* flex: 1; */
-  display: inline-block;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   vertical-align: top;
-  width: calc((100% - 40px) / 3); 
+  width: calc((100% - 40px) / 3);
 }
 
 .block__title {
   font-size: 32px;
+  margin: 0px 12px;
 }
 
 .block__content {
   font-size: 16px;
-  margin: 10px 0px;
+  margin: 10px 12px;
 }
 
 .block__button {
+  margin-top: auto;
   background: rgb(108, 117, 125);
-  display: inline-block;
   color: white;
   padding: 12px 10px;
   font-size: 16px;
@@ -110,9 +114,15 @@ html,body {
   font-size: 16px;
   padding-top: 20px;
   border-top: 1px solid rgba(0,0,0,0.1);
+  margin-bottom: 30px;
 }
 
 @media (max-width: 747px){
+  .blocks {
+  margin: 50px 0px;
+  display: block;
+}
+
   .block {
     width: 100%;
     margin-top: 20px;
