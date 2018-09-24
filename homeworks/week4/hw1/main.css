@@ -1,0 +1,138 @@
+.grid-container {
+  font-size: 30px;
+  
+  display: grid;
+  width: 80%;
+  margin: auto;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-gap: 10px 10px;
+  grid-template-areas: 
+  "panel panel panel panel"
+  "l-b   r-b   percent ac"
+  "seven eight nine divide"
+  "four five six multiply"
+  "one two three minus"
+  "zero point equal plus";
+}
+
+.numbers {
+  border: #e5bb99 1px solid;
+  /* align-self: stretch; */
+  text-align:center;
+  line-height:80px;
+}
+
+.numbers:hover {
+  background-color:#e5bb99;
+}
+
+.operator {
+  border: #83d6d8 2px solid;
+  /* align-self: stretch; */
+  text-align:center;
+  line-height:80px;
+}
+
+.operator:hover {
+  background-color: #83d6d8;
+}
+
+.panel {
+  grid-area: panel;
+  text-align: right;
+  font-size: 62px;
+  border: #c3b7e6 2px solid;
+  padding: 0px 20px;
+}
+
+.ac {
+  grid-area: ac;
+  border: #c4d4a3 2px solid;
+  text-align:center;
+  line-height:80px;
+}
+
+.ac:hover {
+  background-color: #c4d4a3;
+}
+
+.plus {
+  grid-area: plus;
+}
+
+.minus {
+  grid-area: minus;
+}
+
+.multiply {
+  grid-area: multiply;
+}
+
+.divide {
+  grid-area: divide;
+}
+
+.equal {
+  grid-area: equal;
+}
+
+.point {
+  grid-area: point;
+}
+
+.zero {
+  grid-area: zero;
+}
+
+.one {
+  grid-area: one;
+}
+
+.two {
+  grid-area: two;
+}
+
+.three {
+  grid-area: three;
+}
+
+.four {
+  grid-area: four;
+}
+
+.five {
+  grid-area: five;
+}
+
+.six {
+  grid-area: six;
+}
+
+.seven {
+  grid-area: seven;
+}
+
+.eight {
+  grid-area: eight;
+}
+
+.nine {
+  grid-area: nine;
+}
+
+.percent {
+  grid-area: percent;
+}
+
+.r-b {
+  grid-area: r-b;
+}
+
+.l-b {
+  grid-area: l-b;
+}
+
+.active {
+  background-color: cornflowerblue;
+}
