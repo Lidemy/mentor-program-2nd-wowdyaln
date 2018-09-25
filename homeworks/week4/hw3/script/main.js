@@ -14,24 +14,7 @@ let gameList = {
   "ZD": "The%20Legend%20of%20Zelda%3A%20Breath%20of%20the%20Wild",
 }
 
-document.getElementById('selector').addEventListener('change', ()=> {
-  let doms = document.getElementById('game-select')
-  let game  = doms[doms.selectedIndex].value
-
-  let queryGame = gameList[game]
-
-  alert(queryGame)
-})
-
-
-
-let game = "League%20of%20Legends"
-let game2 = "Street%20Fighter%20V"
-let game3 = "The%20Legend%20of%20Zelda%3A%20Breath%20of%20the%20Wild"
-
-
-let twitchUrl = `${Url}/?game=${game3}&limit=${limit}`
-
+let twitchUrl = `${Url}/?game=${gameList["LOL"]}&limit=${limit}`
 
 // 
 $(document).ready(function () {
@@ -46,14 +29,11 @@ $(document).ready(function () {
       // if succeed in getting data from server
       success: function (datas) {
         console.log('ajax successful');
-        // change gameTitle
-        console.log($('.gameTitle'));
         $('.gameTitle').text(datas.streams[0].game)
 
         // add liveStream boxes.
         datas.streams.forEach((data) => {
-          console.log(data);
-
+          // console.log(data);
           let newContent = `
                   <div class="container__box">
                     <div class="box__video">
@@ -82,6 +62,25 @@ $(document).ready(function () {
       }
     })
   }
-
+  // get LOL streams.
   getData()
+
+// 當下拉選單有更動時候... ...
+  document.getElementById('selector').addEventListener('change', () => {
+    let doms = document.getElementById('game-select')
+    let game = doms[doms.selectedIndex].value  //! the point.
+
+    if (game){
+      let queryGame = gameList[game]
+      twitchUrl = `${Url}/?game=${queryGame}&limit=${limit}`
+  
+      // clean screen
+      $('.container__box').remove()
+  
+      // get selected game's stream.
+      getData()
+    }
+    
+  })
+
 })
