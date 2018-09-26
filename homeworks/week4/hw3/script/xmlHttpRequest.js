@@ -7,7 +7,6 @@ let gameList = {
   "SFV": "Street%20Fighter%20V",
   "ZD": "The%20Legend%20of%20Zelda%3A%20Breath%20of%20the%20Wild",
 }
-
 let twitchUrl = `${Url}/?game=${gameList["LOL"]}&limit=${limit}`
 
 // DOMContentLoaded ready
@@ -29,9 +28,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   // when an XMLHttpRequest transaction completes successfully ... ...
   // XMLHttpRequestEventTarget.onload
-  req.onload = ()=>{
+  req.onload = function getStreams(){
     let respJSON = JSON.parse(req.responseText)  //responseText feature is obsolete. Try to avoid using it.
+
     if (req.status >= 200 && req.status < 400){
+      // 更改網頁 title
+      document.querySelector('.gameTitle').innerText = respJSON.streams[0].game
       // 把 stream 一個個 append 到 .container 裡
       respJSON.streams.forEach( stream => {
         let { channel: {url, logo, status, display_name},
@@ -44,7 +46,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
       document.querySelector('.container').innerHTML += `<h1>something wrong !</h1>`
     }
   }
-
   //
   function renderStream(url, medium, logo, status, display_name, created_at){
     return `
@@ -65,4 +66,24 @@ document.addEventListener('DOMContentLoaded', ()=>{
             </div>
                 `
   }
+  // 當下拉選單有更動時候，清除畫面，重新發 request
+  document.getElementById('selector').addEventListener('change', () => {
+    let doms = document.getElementById('game-select')
+    let game = doms[doms.selectedIndex].value  //! the point.
+
+    if (game) {
+      let queryGame = gameList[game]
+      twitchUrl = `${Url}/?game=${queryGame}&limit=${limit}`
+      // clean screen
+      let containerDom = document.querySelector('.container')
+      while (containerDom.firstChild) {     //! the point.
+        containerDom.removeChild(containerDom.firstChild);
+      }
+      // 重新發 request
+      req.open('GET', twitchUrl)
+      req.setRequestHeader("Accept", accept)
+      req.setRequestHeader("Client-ID", clientID)
+      req.send();
+    }
+  })
 })
