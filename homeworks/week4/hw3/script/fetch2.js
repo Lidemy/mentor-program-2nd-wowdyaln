@@ -10,37 +10,19 @@ var myInit = {
   method: 'GET',
   headers: myHeaders,
 };
-let gameList = {
-  "LOL": "League%20of%20Legends",
-  "SFV": "Street%20Fighter%20V",
-  "ZD": "The%20Legend%20of%20Zelda%3A%20Breath%20of%20the%20Wild",
-}
-let twitchUrl = `${Url}/?game=${gameList["LOL"]}&limit=${limit}`
 
 // DOMContentLoaded ready
 // initial HTML document has been completely loaded and parsed
 document.addEventListener('DOMContentLoaded', ()=>{
   console.log("DOM ready");
+  let q = window.location.search
+  let query = q.split("=")[1].replace(/\+/g, " ")
+  let gameName = encodeURI(query)  //! 碰到有奇怪符號的名字就不行了
+  console.log(gameName);
+  
+  let twitchUrl = `${Url}/?game=${gameName}&limit=${limit}`
   // 使用 fetch 發 request
   getStreams(twitchUrl, myInit)
-  
-  // 當下拉選單有更動時候，清除畫面，重新發 request
-  document.getElementById('selector').addEventListener('change', () => {
-    let doms = document.getElementById('game-select')
-    let game = doms[doms.selectedIndex].value  //! the point.
-
-    if (game) {
-      let queryGame = gameList[game]
-      twitchUrl = `${Url}/?game=${queryGame}&limit=${limit}`
-      // clean screen
-      let containerDom = document.querySelector('.container')
-      while (containerDom.firstChild) {     //! the point.
-        containerDom.removeChild(containerDom.firstChild);
-      }
-      // 重新發 request
-      getStreams(twitchUrl, myInit)
-    }
-  })
 
   // 把 fetch 包成 function 使用
    function getStreams(twitchUrl, myInit){
