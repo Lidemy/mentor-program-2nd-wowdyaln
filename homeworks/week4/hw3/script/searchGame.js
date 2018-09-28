@@ -22,12 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
   getGames(twitchUrl, myInit) // Super Mario
   
   // 觸發 submit 事件就，清除畫面，重新發 request
-  document.querySelector('body').addEventListener('submit', (e) => {
+  document.querySelector('.searchBox').addEventListener('submit', (e) => {
     e.preventDefault()
     searchGame = document.querySelector('#search').value
     document.querySelector('#search').value = ""
     console.log(searchGame)
-    
+
     if (searchGame) {
       twitchUrl = `${Url}?query=${searchGame}&live=true`
       // clean screen
@@ -76,15 +76,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   //
   function renderStream(name, _id, large) {
+    // name = encodeURI(name)
+    // https://stackoverflow.com/questions/14693758/passing-form-data-to-another-html-page
   return `
           <div class="container__box">
-              <a href="#" target="_blank" data-gameName="${name}" data-gameId="${_id}">
-                <img src=${large}>
-              </a>
+              <form action="./streams.html" method="GET" target="_blank">
+                  <input type="hidden" name="gameName" value="${name}" />
+                  <input class="submit" type="submit" value="目前 Live" />
+              </form>
+
+              <img src=${large}>
           </div>
           `
-  }
-
+  } 
 
   function renderErroMsg(){
     return `

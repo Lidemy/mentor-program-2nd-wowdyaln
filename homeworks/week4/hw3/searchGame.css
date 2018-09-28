@@ -17,6 +17,7 @@
 }
 
 .container__box {
+  position: relative;
   border: 1px black solid;
   width: 272px;
   height: 380px;
@@ -26,6 +27,17 @@
   transition: transform .2s;
 }
 
-.container__box:hover {
-    transform: scale(1.03);
+.submit {
+    font-size: 16px;
+    background: #2196F3;
+    padding: 6px;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    color: white;
+}
+
+.submit:hover {
+    cursor: pointer;
+    transform: scale(1.1);
 }
