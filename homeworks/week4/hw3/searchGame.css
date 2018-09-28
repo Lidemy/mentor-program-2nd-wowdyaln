@@ -1,0 +1,31 @@
+.searchBox {
+  margin: 30px auto;
+  text-align: center;
+}
+
+.searchBox__ele {
+  /* height: 50px */
+  font-size: 28px;
+}
+
+.container {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px auto;
+}
+
+.container__box {
+  border: 1px black solid;
+  width: 272px;
+  height: 380px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  transition: transform .2s;
+}
+
+.container__box:hover {
+    transform: scale(1.03);
+}

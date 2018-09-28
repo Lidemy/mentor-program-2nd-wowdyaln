@@ -42,8 +42,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
   })
 
-  // 把 fetch 包成 async function 使用
-  async function getStreams(twitchUrl, myInit){
+  // 把 fetch 包成 function 使用
+   function getStreams(twitchUrl, myInit){
     fetch(twitchUrl, myInit)
       .then(res => {
         if (res.ok) {
