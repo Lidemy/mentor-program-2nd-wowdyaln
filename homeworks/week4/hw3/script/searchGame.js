@@ -19,25 +19,26 @@ let twitchUrl = `${Url}?query=${searchGame}&live=true`
 document.addEventListener('DOMContentLoaded', () => {
   console.log("DOM ready");
   // 使用 fetch 發 request
-  getGames(twitchUrl, myInit)
-
-  // 當下拉選單有更動時候，清除畫面，重新發 request
-  // document.getElementById('selector').addEventListener('change', () => {
-  //   let doms = document.getElementById('game-select')
-  //   let game = doms[doms.selectedIndex].value  //! the point.
-
-  //   if (game) {
-  //     let queryGame = gameList[game]
-  //     twitchUrl = `${Url}/?game=${queryGame}&limit=${limit}`
-  //     // clean screen
-  //     let containerDom = document.querySelector('.container')
-  //     while (containerDom.firstChild) {     //! the point.
-  //       containerDom.removeChild(containerDom.firstChild);
-  //     }
-  //     // 重新發 request
-  //     getGames(twitchUrl, myInit)
-  //   }
-  // })
+  getGames(twitchUrl, myInit) // Super Mario
+  
+  // 觸發 submit 事件就，清除畫面，重新發 request
+  document.querySelector('body').addEventListener('submit', (e) => {
+    e.preventDefault()
+    searchGame = document.querySelector('#search').value
+    document.querySelector('#search').value = ""
+    console.log(searchGame)
+    
+    if (searchGame) {
+      twitchUrl = `${Url}?query=${searchGame}&live=true`
+      // clean screen
+      let containerDom = document.querySelector('.container')
+      while (containerDom.firstChild) {     //! the point.
+        containerDom.removeChild(containerDom.firstChild);
+      }
+      // 重新發 request
+      getGames(twitchUrl, myInit)
+    }
+  })
 
 
   // 把 fetch 包成 function 使用
@@ -51,18 +52,25 @@ document.addEventListener('DOMContentLoaded', () => {
         throw new Error('Network response was not ok.');
       })
       .then((respJSON) => {
-        // 把 stream 一個個 append 到 .container 裡
-        respJSON.games.forEach( game => {
-          let { 
-                name,
-                _id,
-                box: { large }
-              } = game
-
-          document.querySelector('.container').innerHTML += renderStream(name, _id, large)
-        })
+        // 如果有找到遊戲
+        if ( respJSON.games  ){
+          // 把 stream 一個個 append 到 .container 裡
+          respJSON.games.forEach( game => {
+            let { 
+                  name,
+                  _id,
+                  box: { large }
+                } = game
+  
+            document.querySelector('.container').innerHTML += renderStream(name, _id, large)
+          })
+        } else if ( respJSON.games == null) {
+          // 沒找到遊戲
+          document.querySelector('.container').innerHTML += renderErroMsg()
+        }
       })
       .catch(function (error) {
+        renderErroMsg()
         console.log('There has been a problem with your fetch operation: ', error.message);
       })
   }
@@ -75,5 +83,12 @@ document.addEventListener('DOMContentLoaded', () => {
               </a>
           </div>
           `
+  }
+
+
+  function renderErroMsg(){
+    return `
+              <h1>Sorry ! Nothing found ... ... </h1>
+        `
   }
 })
