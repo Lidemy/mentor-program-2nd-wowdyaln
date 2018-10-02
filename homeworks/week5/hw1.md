@@ -3,9 +3,9 @@
 | 欄位名稱 | 欄位型態 | 說明 |
 |----------|----------|------|
 |  id  |    integer      | 主鍵     |
-| content   | text | 留言內容  |
-| user_id   | integer | 留言人  |
-| created_at   | timestamp | 留言建立時刻  |
+| content   | text | 主留言內容  |
+| user_id   | integer | 主留言人  |
+| created_at   | timestamp | 主留言建立時刻  |
 
 - 資料庫名稱：sub_comments （子留言）
 
