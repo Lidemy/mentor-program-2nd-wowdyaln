@@ -1,5 +1,10 @@
 <?php
-if ( isset($_COOKIE["week5"])){
+require './db/conn.php';
+// find a user according to Cookies.
+$findSession_stmt = $conn->prepare("SELECT * FROM users_certificate WHERE `session` = ? ");
+$findSession_stmt->execute(array($_COOKIE["week5"]));
+
+if ($findSession_stmt->rowCount() === 1){
   echo "<h1>你已經登入</h1>
         <br>
         <a href=./board.php> 留言板 </a>
@@ -11,4 +16,5 @@ if ( isset($_COOKIE["week5"])){
   <a href=./board.php> 留言板 </a>
   ";
 }
+
 ?>

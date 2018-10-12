@@ -232,31 +232,37 @@ $nicknames = [
 "Cupid"
 ];
 
-try {
-    $conn->autocommit(false);
-    $conn->begin_transaction();
+// 取得 comments 的所有 id, 存成 comments_id_Ary
+$getCommentsId = "SELECT id FROM comments";
+$commentsIds = [];
 
-    for ($i = 0; $i < count($users); $i++) {
-        $user = $users[$i];
-        $nickname = $nicknames[mt_rand(0, count($nicknames) - 1)];
-        $password = password_hash('123', PASSWORD_DEFAULT);
-        $createUser = "INSERT INTO `wowdyaln_users` (`id`, `username`, `nickname`, `password`) VALUES (NULL, '{$user}', '{$nickname}', '{$password}') ";
+if ($conn->query($getCommentsId)) {
+  $temp = $conn->query($getCommentsId);
 
-        if (!$conn->query($createUser)) {
-            throw new Exception($conn->error);
-        }
-        echo "... ... create a user: '$user' <br> ";
+  if ($temp->num_rows > 0) {
+    while ($row = $temp->fetch_assoc()) {
+      $id = $row["id"];
+      array_push($commentsIds, $id);
     }
-    $conn->commit();
-    echo "all transaction succeeded.";
+    // echo $commentsIds;
 
-} catch (Exception $e) {
-    $conn->rollback();
-
-    var_dump("Error: $e : <br><br>
-  sql: {$createUser}  <br><br>
-  all transaction failed.");
+  } else {
+      echo " Error: {$conn->error} :
+                      sql: {$getCommentsId}  ";
+  }
 }
+for ($i=0; $i < count($users); $i++){
+  $user = $users[$i];
+  $nickname = $nicknames[ mt_rand(0, count($nicknames)-1 )];
+  $password = password_hash('123', PASSWORD_DEFAULT);
 
+  $createUser = "INSERT INTO `users` (`id`, `username`, `nickname`, `password`) VALUES (NULL, '{$user}', '{$nickname}', '{$password}') ";
+  if ($conn->query($createUser)) {
+    echo "good! create a user: '$user'. <br> ";
+  } else {
+      echo " Error: {$conn->error} :
+                      sql: {$postReply}  ";
+  }
+}
 
 ?>

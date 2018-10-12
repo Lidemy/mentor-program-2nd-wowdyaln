@@ -1,31 +1,17 @@
 <?
-  //conncet to mySQL
 require('./db/conn.php');
+// password 要經過 hash function，存 hash 進資料庫。
+$hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-// get data from index.php/form
-  $raw_username = $_POST['username'];
-  $raw_nickname = $_POST['nickname'];
-  $raw_password = $_POST['password'];
+$signup_stmt = $conn->prepare("INSERT INTO `users` (`id`, `username`,nickname, `password`) VALUES (NULL, ?, ?, ? )");
 
-  // 預防 XSS 腳本寫入攻擊
-  $username = htmlspecialchars($raw_username, ENT_QUOTES);
-  $nickname = htmlspecialchars($raw_nickname, ENT_QUOTES);
-  $password = htmlspecialchars($raw_password, ENT_QUOTES);
-
-  // password 要經過 hash function，存 hash 進資料庫。
-  $hash = password_hash($password, PASSWORD_DEFAULT);
- 
-  $sql = "INSERT INTO `wowdyaln_users` (`id`, `username`,nickname, `password`) VALUES (NULL, '{$username}','{$nickname}', '{$hash}') ";
-
-  if ( $conn->query($sql) ) {
-    echo "New user created successfully 
-    {$username}  你好！
-    ";
-  } else {
-      echo " Error: {$conn->error} :
-
-  sql: {$sql}  ";
-  }
+if ( $signup_stmt->execute(array($_POST['username'], $_POST['nickname'], $hash)) ) {
+  echo "New user created successfully 
+  <h3>註冊成功！ 請重新登入。</h3>
+  ";
+} else {
+    echo " Error ";
+}
 
 echo "<br> <a href=./board.php> 留言板 </a>";
 ?>

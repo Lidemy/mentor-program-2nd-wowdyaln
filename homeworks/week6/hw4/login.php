@@ -2,42 +2,45 @@
 // conncet to mySQL
 require('./db/conn.php');
 
-// get data from index.php/form
-$raw_username = $_POST['username'];
-$raw_password = $_POST['password'];
-// 預防 XSS 腳本寫入攻擊
-$username = htmlspecialchars($raw_username, ENT_QUOTES);
-$password = htmlspecialchars($raw_password, ENT_QUOTES);
-// todo: 使用 php 的 $_SESSION['week'] ，不用資料庫存取。(目前全部自行寫邏輯去操作)
+// todo: 使用 php 的 $_SESSION['week'] ，存在記憶體不用資料庫存取。(目前全部自行寫邏輯去操作)
 // password 要經過 hash function ，然後去對比 hash
-$findUser = "SELECT * FROM wowdyaln_users WHERE username = '$username' ";
-$hash = $conn->query($findUser)->fetch_assoc()['password'];
-$findSession = "SELECT * FROM `wowdyaln_users_certificate` WHERE `username` = '{$username}'";
 
-// 前端的 password 經過hash 之後，跟 後端 hash 比對看看有沒有相同。
-if ( password_verify($password, $hash)){
+$findUser = "SELECT * FROM users WHERE username = ? ";
+$findUser_stmt = $conn->prepare($findUser);
+$findUser_stmt->execute( array($_POST['username']) );
 
-$user = $conn->query($findUser)->fetch_assoc()['username'];
-$newSession = session_create_id();
+$findUser_stmt->setFetchMode(PDO::FETCH_ASSOC);
 
-if ($conn->query($findSession)->num_rows === 1){
-  $oldSession = $conn->query($findSession)->fetch_assoc()['session'];
-  $updateSession = "UPDATE `wowdyaln_users_certificate` SET `session` = '{$newSession}' WHERE `wowdyaln_users_certificate`.`session` = '{$oldSession}' ";
-  $conn->query($updateSession);
-} else {
-  $saveSession = "INSERT INTO `wowdyaln_users_certificate` (`session`, `username`) VALUES ('{$newSession}', '{$user}')";
-  $conn->query($saveSession);
-}
-// setcookie($name, $value, $expire)
-$cookie = $newSession;
-setcookie("week5", $cookie, time() + 60 * 60);
+// username 只有唯一一個
+if ($findUser_stmt->rowCount() === 1){
 
-echo "<h2>登入成功</h2>  {$username}  你好！";
+  $user = $findUser_stmt->fetch();  
+  
+  if ( password_verify($_POST['password'], $user['password'])){
 
+    $findExistSession_stmt = $conn->prepare("SELECT `session` FROM `users_certificate` WHERE `username` = ? ");
+    $findExistSession_stmt->execute(array($_POST['username']));
+    $username = $user['username'];
+    // 如果 user 之前已經有留 session 在資料庫，先砍掉
+    if( $findExistSession_stmt->rowCount() ){
+      // echo "exist !!!";
+      $removeSession = "DELETE FROM users_certificate WHERE username = '$username' ";
+      $conn->exec($removeSession);
+    }
+    
+    $newSession = session_create_id();
+    
+    $saveSession = "INSERT INTO `users_certificate` (`session`, `username`) VALUES ('{$newSession}', '{$username}')";
+    $conn->exec($saveSession);
+    
+    // setcookie($name, $value, $expire);
+    setcookie("week5", $newSession, time() + 60 * 60);
+  }
+  echo "<h2>登入成功</h2>  {$username}  你好！";
 } else {
   echo 'login failed !';
 }
-
-  echo "<br> <a href=./index.php> index page </a>";
+  
+echo "<br> <a href=./index.php> index page </a>";
 
 ?>

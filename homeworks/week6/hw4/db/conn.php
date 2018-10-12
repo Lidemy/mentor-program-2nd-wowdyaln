@@ -1,21 +1,21 @@
-<?
-$servername = "localhost";
-$username = "";
-$password = "";
-$dbname = "";
+<?php
+$db_host = "localhost";
+$db_name = "";
+$db_user = "";
+$db_password = "";
 
-// create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-$conn->query("SET NAMES 'UTF8'");
-$conn->query("SET time_zone = '+08:00' ");
+// http: //php.net/manual/en/pdo.construct.php
+$dsn = "mysql:host=$db_host;dbname=$db_name;charset=utf8";
 
+try {
+    $conn = new PDO( $dsn, $db_user, $db_password );
+    // http: //php.net/manual/en/pdo.setattribute.php
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $conn->query("SET time_zone = '+08:00'");
+} catch (PDOException $e) {
+    echo 'Connection failed: ' . $e->getMessage();
+}
 
-// check connection
-if ($conn->connect_error) {
-    die("connection failed: " . $conn->connect_error);
-};
 
 ?>
-
-
 

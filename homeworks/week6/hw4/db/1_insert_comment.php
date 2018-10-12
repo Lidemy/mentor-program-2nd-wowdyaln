@@ -1,7 +1,7 @@
 <?
 require './conn.php';
 
-$getUserId = "SELECT id FROM wowdyaln_users ";
+$getUserId = "SELECT id FROM users ";
 $userIds = [];
 
 if ($conn->query($getUserId) ){
@@ -44,11 +44,11 @@ $comments = [
 ,"蓬萊米比較短而黏，壽司米屬於這種。"
 ];
 
-for ($i=0; $i < 50; $i++){
+for ($i=0; $i < 20; $i++){
   $user_id = $userIds[ mt_rand(0, count($userIds)-1 )];
   $content = $comments[ mt_rand(0, count($comments)-1 )];
 
-  $writeAcomment = "INSERT INTO `wowdyaln_comments` (`id`, `content`, `created_at`, `user_id`) VALUES (NULL, '$content', CURRENT_TIMESTAMP, '$user_id' )";
+  $writeAcomment = "INSERT INTO `comments` (`id`, `content`, `created_at`, `user_id`) VALUES (NULL, '$content', CURRENT_TIMESTAMP, '$user_id' )";
   if ($conn->query($writeAcomment)) {
     echo "good! <br>";
   } else {

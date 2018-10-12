@@ -1,37 +1,48 @@
 <!-- main comment -->
 <?php
-  //conncet to mySQL
   require '../db/conn.php';
-  // find a user according to Cookies.
-  $session = $_COOKIE["week5"];
-  $findUser = "SELECT * FROM wowdyaln_users_certificate WHERE `session` = '{$session}'";
-  $user = $conn->query($findUser)->fetch_assoc()['username'];
 
-  $findUserId = "SELECT id FROM wowdyaln_users WHERE username = '{$user}'";
-  $userId = $conn->query($findUserId)->fetch_assoc()['id'];
+  $findSession_stmt = $conn->prepare("SELECT * FROM users_certificate WHERE `session` = ? ");
+  $findSession_stmt->execute(array($_COOKIE["week5"]));
 
-  $id = $_POST['comment_id'];
-  $raw_comment = $_POST['main_comment'];
+  if ($findSession_stmt->rowCount() === 1){
+    $findSession_stmt->setFetchMode(PDO::FETCH_ASSOC);
+    $certificate = $findSession_stmt->fetch();
+    $username = $certificate['username'];
 
-  $findComment_userId = "SELECT `user_id` FROM wowdyaln_comments WHERE id = '{$id}' ";
-  $comment_userId = $conn->query($findComment_userId)->fetch_assoc()['user_id'];
+    
+    $findUser_stmt = $conn->prepare("SELECT * FROM users WHERE `username` = ? ");
+    $findUser_stmt->execute(array($username));
+    $findUser_stmt->setFetchMode(PDO::FETCH_ASSOC);
+    $user = $findUser_stmt->fetch();
+    $userId = $user['id'];
 
-  // verify user id.
-  if ($comment_userId === $userId){
-    // 預防 XSS 腳本寫入攻擊
-    $comment = htmlspecialchars($raw_comment, ENT_QUOTES);
-    $updateComment = "UPDATE `wowdyaln_comments` SET `content` = '{$comment}' WHERE `wowdyaln_comments`.`id` = {$id} ";
-    if ($conn->query($updateComment)) {
-    // INSERT INTO success
-    header("Location: ../board.php");
+    $findComment_userId_stmt = $conn->prepare("SELECT `user_id` FROM comments WHERE id = ? ");
+    $findComment_userId_stmt->execute(array($_POST['comment_id']));
+    $findComment_userId_stmt->setFetchMode(PDO::FETCH_ASSOC);
+    $comment = $findComment_userId_stmt->fetch();
+    $comment_userId = $comment['user_id'];
+
+    // verify user id.
+    if ($comment_userId === $userId){
+      // 預防 XSS 腳本寫入攻擊
+      $comment = htmlspecialchars($_POST['main_comment'], ENT_QUOTES);
+      $updateComment_stmt = $conn->prepare("UPDATE `comments` SET `content` = ? WHERE `comments`.`id` = ? ");
+
+      if ( $updateComment_stmt->execute(array($comment, $_POST['comment_id'])) ) {
+        // INSERT INTO success
+        // header("Location: ../board.php");
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
+      } else {
+      echo " Error: {$conn->error} :
+                sql: {$updateComment}  ";
+      }
+
     } else {
-    echo " Error: {$conn->error} :
-              sql: {$updateComment}  ";
+      var_dump ($comment_userId);
+      var_dump ($userId);
+
     }
-  } else {
-    var_dump ($comment_userId);
-    var_dump ($userId);
-    // header("Location: ../index.php");
-  }
+}
 
 ?>

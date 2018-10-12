@@ -1,29 +1,37 @@
-
-<!-- main comment -->
 <?php
-  //conncet to mySQL
   require '../db/conn.php';
-
   // find a user according to Cookies.
-  $session = $_COOKIE["week5"];
-  $findUser = "SELECT username FROM wowdyaln_users_certificate WHERE `session` = '{$session}'";
-  $user = $conn->query($findUser)->fetch_assoc()['username'];
+  $findSession_stmt = $conn->prepare("SELECT * FROM users_certificate WHERE `session` = ? ");
+  $findSession_stmt->execute(array($_COOKIE["week5"]));
 
-  $findNickname = "SELECT nickname FROM wowdyaln_users WHERE username = '{$user}'";
-  $nickname = $conn->query($findNickname)->fetch_assoc()['nickname'];
+  if ($findSession_stmt->rowCount() === 1){
+
+  $findSession_stmt->setFetchMode(PDO::FETCH_ASSOC);
+  $certificate = $findSession_stmt->fetch();
+  $username = $certificate['username'];
   
-  $raw_comment = $_POST['main_comment'];
+  $findUser_stmt = $conn->prepare("SELECT * FROM users WHERE `username` = ? ");
+  $findUser_stmt->execute(array($username));
+  $findUser_stmt->setFetchMode(PDO::FETCH_ASSOC);
+  $user = $findUser_stmt->fetch();
+  $userId = $user['id'];
+  
   // 預防 XSS 腳本寫入攻擊
-  $comment = htmlspecialchars($raw_comment, ENT_QUOTES);
-
-  $user_id = $_POST['user_id'];
-  $writeAcomment = "INSERT INTO `wowdyaln_comments` (`id`, `content`, `created_at`, `user_id` ) VALUES (NULL, '$comment', CURRENT_TIMESTAMP, '$user_id' )";
-
-  if ($conn->query($writeAcomment)) {
-  // INSERT INTO success
+  $comment = htmlspecialchars($_POST['main_comment'], ENT_QUOTES);
+  
+  $writeAcomment = "INSERT INTO `comments` (`id`, `content`, `created_at`, `user_id` ) VALUES (NULL, '$comment', CURRENT_TIMESTAMP, '$userId' )";
+  
+  if ( $conn->query($writeAcomment) ){
+    // INSERT INTO success
+  // header('Location: ' . $_SERVER['HTTP_REFERER']);
+  // 返回首頁
   header("Location: ../board.php");
   } else {
-  echo " Error: {$conn->error} :
-            sql: {$writeAcomment}  ";
+    echo " sql Error ";
   }
+  } else {
+  
+  echo " something Error ";
+  }
+  
 ?>

@@ -29,8 +29,8 @@ $replys = [
     , "蓬萊米比較短而黏，壽司米屬於這種。",
 ];
 
-// 取得wowdyaln_users 的所有 id, 存成 userIds
-$getUserId = "SELECT id FROM wowdyaln_users ";
+// 取得 users 的所有 id, 存成 userIds
+$getUserId = "SELECT id FROM users ";
 $userIds = [];
 if ($conn->query($getUserId)) {
     $temp = $conn->query($getUserId);
@@ -47,8 +47,8 @@ if ($conn->query($getUserId)) {
 }
 // var_dump($userIds);
 
-// 取得 wowdyaln_comments 的所有 id, 存成 wowdyaln_commentsIds
-$getCommentsId = "SELECT id FROM wowdyaln_comments";
+// 取得 comments 的所有 id, 存成 commentsIds
+$getCommentsId = "SELECT id FROM comments";
 $commentsIds = [];
 
 if ($conn->query($getCommentsId)) {
@@ -72,7 +72,7 @@ for ($i=0; $i < 120; $i++){
   $reply = $replys[ mt_rand(0, count($replys)-1 )];
   $user_id = $userIds[ mt_rand(0, count($userIds)-1 )];
 
-  $postReply = "INSERT INTO `wowdyaln_sub_comments` (`id`, `comment_id`, `sub_content`, `created_at`, `user_id`) VALUES (NULL, '$comment_id', '$reply', CURRENT_TIMESTAMP, '$user_id')";
+  $postReply = "INSERT INTO `sub_comments` (`id`, `comment_id`, `sub_content`, `created_at`, `user_id`) VALUES (NULL, '$comment_id', '$reply', CURRENT_TIMESTAMP, '$user_id')";
   if ($conn->query($postReply)) {
     echo "good! <br>";
   } else {

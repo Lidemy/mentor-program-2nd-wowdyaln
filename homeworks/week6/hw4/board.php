@@ -11,24 +11,28 @@
 <body>
     <span class="loginStatus"> 
     <?php
-    //conncet to mySQL
     require './db/conn.php';
 
     $un = false;   //current user's name
     $unId = false; //current user's id
 
-    // $user_id = false;
-
-
-    if ( isset($_COOKIE["week5"])){
-            // find a user according to Cookies.
-      $session = $_COOKIE["week5"];
-      $findUsername = "SELECT * FROM wowdyaln_users_certificate WHERE `session` = '{$session}'";
-      $un = $conn->query($findUsername)->fetch_assoc()['username'];
+    if ( isset($_COOKIE["week5"]) ){
+      $findUsername = "SELECT * FROM users_certificate WHERE `session` = ? ";
+      $findUsername_stmt = $conn->prepare($findUsername);
+      $findUsername_stmt->execute(array($_COOKIE["week5"]));
+      $findUsername_stmt->setFetchMode(PDO::FETCH_ASSOC);
+      $user = $findUsername_stmt->fetch();
       
-      $findUserInfo = "SELECT * FROM `wowdyaln_users` WHERE `username` = '{$un}'";
-      $unId = $conn->query($findUserInfo)->fetch_assoc()['id'];
-      $nk = $conn->query($findUserInfo)->fetch_assoc()['nickname'];
+      $un = $user['username'];
+      
+      $findUserInfo = "SELECT * FROM `users` WHERE `username` = ? ";
+      $findUserInfo_stmt = $conn->prepare($findUserInfo);
+      $findUserInfo_stmt->execute(array($un));
+      $findUserInfo_stmt->setFetchMode(PDO::FETCH_ASSOC);
+      $userInfo = $findUserInfo_stmt->fetch();
+      
+      $unId = $userInfo['id'];
+      $nk = $userInfo['nickname'];
 
       echo "login ✅ <br>
             Hi ! $un <br>
@@ -61,12 +65,10 @@
     </form>";
     }
     
-//conncet to mySQL
-// require './db/conn.php';
-//
-$howManyComments = "SELECT COUNT(id) AS comment_count FROM wowdyaln_comments";
-$res = $conn->query($howManyComments);
-$comments_count = $res->fetch_assoc();
+// howManyComments
+$howManyComments_sql = "SELECT COUNT(id) AS comment_count FROM comments";
+$res = $conn->query($howManyComments_sql);
+$comments_count = $res->fetch(PDO::FETCH_ASSOC);
 // how many pages ?
 $pages_count = ceil( $comments_count['comment_count'] / 10);
 
@@ -77,21 +79,24 @@ if (!isset($_GET['page'])){
     $current_page = $_GET['page'];
   }
 $from = ($current_page-1)*10;
-  // read 10 main wowdyaln_comments depend on current page.
-$readAll = "SELECT * FROM `wowdyaln_comments` ORDER BY created_at DESC LIMIT 10 OFFSET {$from} ";
-$result = $conn->query($readAll);
+  // read 10 main comments depend on current page.
   
-  if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
+$readAll = "SELECT * FROM `comments` ORDER BY created_at DESC LIMIT 10 OFFSET {$from} ";
+$result = $conn->query($readAll);
+    
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
       $id = $row["id"];
       $main_user_id = $row["user_id"];
       $content = $row["content"];
       $created_at = $row["created_at"];
 
-      $findAuthorInfo = "SELECT * FROM `wowdyaln_users` WHERE `id` = '{$main_user_id}'";
-      $nickname = $conn->query($findAuthorInfo)->fetch_assoc()['nickname'];
+      $findAuthorInfo_sql = "SELECT * FROM `users` WHERE `id` = ? ";
+      $findAuthorInfo_stmt = $conn->prepare($findAuthorInfo_sql);
+      $findAuthorInfo_stmt->execute(array($main_user_id));
+      $findAuthorInfo_stmt->setFetchMode(PDO::FETCH_ASSOC);
+      $author = $findAuthorInfo_stmt->fetch();
 
-      
+      $nickname = $author['nickname'];
 
 echo "<div class=container__box>main comment {$id}。 at : {$created_at}
           <div class=box__nickname>暱稱：{$nickname}</div>
@@ -102,32 +107,42 @@ echo "<div class=container__box>main comment {$id}。 at : {$created_at}
             <form action=./edit.php method=post>
               <input type=hidden name=comment_id value={$id}>
               
-              <input type=hidden name=comment_content value={$content}>
+              <input type=hidden name=comment_content value='{$content}'>
               <button>EDIT</button>
             </form>
 
-            <form action=./action/delete_comment.php method=post class=delete>
+            <form action=./action/delete_comment.php method=post>
               <input type=hidden name=comment_id value={$id}>
-              <button style='background-color: red;' >DELETE</button>
+              <button style='background-color: red;' class=delete >DELETE</button>
             </form>";
           }
 
 
 
 // read all sub_comments from mySQL
-$read_subAll = "SELECT * FROM `wowdyaln_sub_comments` WHERE comment_id = $id ORDER BY created_at DESC";
-$sub_result = $conn->query($read_subAll);
+$read_subAll_sql = "SELECT * FROM `sub_comments` WHERE comment_id = $id ORDER BY created_at DESC";
+// $read_subAll_sql = "SELECT * FROM `sub_comments` WHERE comment_id = $id ORDER BY created_at DESC";
+$read_subAll_sql_stmt = $conn->prepare($read_subAll_sql);
+$read_subAll_sql_stmt->execute(array($id));
 
-if ($sub_result->num_rows > 0) {
-    while ($sub_row = $sub_result->fetch_assoc()) {
-        $sub_id = $sub_row["id"];
-        $sub_user_id = $sub_row["user_id"];
-        $sub_content = $sub_row["sub_content"];
-        $created_at = $sub_row["created_at"];
+// $sub_result = $read_subAll_sql_stmt->fetch(PDO::FETCH_ASSOC);
+
+// if ($sub_result->num_rows > 0) {
+    while ($sub_result = $read_subAll_sql_stmt->fetch(PDO::FETCH_ASSOC) ) {
+        $sub_id = $sub_result["id"];
+        $sub_user_id = $sub_result["user_id"];
+        $sub_content = $sub_result["sub_content"];
+        $created_at = $sub_result["created_at"];
 
 
-        $findAuthorInfo = "SELECT * FROM `wowdyaln_users` WHERE `id` = '{$sub_user_id}'";
-        $sub_nickname = $conn->query($findAuthorInfo)->fetch_assoc()['nickname'];
+        $findAuthorInfo = "SELECT * FROM `users` WHERE `id` = ? ";
+        $findAuthorInfo_stmt = $conn->prepare($findAuthorInfo);
+        $findAuthorInfo_stmt->execute(array($sub_user_id));
+
+
+        // $findAuthorInfo = "SELECT * FROM `users` WHERE `id` = '{$sub_user_id}'";
+        $sub_author = $findAuthorInfo_stmt->fetch(PDO::FETCH_ASSOC);
+        $sub_nickname = $sub_author['nickname'];
         
         // 原作者在自己的留言底下回覆的話，背景會顯示不同的顏色
         if ( $sub_user_id === $main_user_id){
@@ -146,7 +161,7 @@ if ($sub_result->num_rows > 0) {
             </div>";
         }
     }
-}
+// }
           if ( $un ){
           echo"
           <!-- write a sub comment here -->
@@ -164,7 +179,7 @@ if ($sub_result->num_rows > 0) {
 
         echo "</div>";
         }
-      }
+      // }
   ?>
   </div>
 
@@ -173,10 +188,8 @@ if ($sub_result->num_rows > 0) {
           for ($i=1; $i <= $pages_count; $i++){
             if($i === $current_page){
               echo "<b>{$i}</b>";
-              // echo "<span><b>{$i}</b></span>";
             } else {
               echo "<a href=board.php?page={$i}>{$i}</a>";
-              // echo "<span><a href=board.php?page={$i}>{$i}</a></span>";
             }
           }
         ?>
