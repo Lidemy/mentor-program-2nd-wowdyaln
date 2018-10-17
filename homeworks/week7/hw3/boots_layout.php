@@ -133,15 +133,16 @@
                                       <span aria-hidden='true'>&times;</span>
                                     </button>
                                   </div>
-                                <form action=./action/edit_comment.php method=post>
+                                <form>
+                                                            <!-- <form action=./action/edit_comment.php method=post> -->
                                   <div class='modal-body'>
-                                      <input type=hidden name=comment_id value={$id}>
-                                      <label for=main_comment class=mb-0>主留言</label>
-                                      <textarea class=form-control rows=2 name=main_comment id=main_comment required>{$content}</textarea>
+                                    <label for=main_comment class=mb-0>主留言</label>
+                                    <textarea class=form-control rows=2 name=main_comment required>{$content}</textarea>
                                   </div>
-                                      <div class='modal-footer'>
-                                      <button type=submit class='btn btn-primary'>送出</button>
-                                      <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
+                                  <div class='modal-footer'>
+                                      <input type=hidden name=comment_id class=comment_id value={$id}>
+                                      <button type=submit class='btn btn-primary' data-dismiss='modal'>送出</button>
+                                      <button type='button' class='btn btn-secondary' data-dismiss='modal'>取消</button>
                                   </div>
                                 </form>
                                   </div>
