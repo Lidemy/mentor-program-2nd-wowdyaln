@@ -1,7 +1,7 @@
 <?
 
 function findUserNameBySession($connection, $cookie){
-  $findUser = "SELECT * FROM wowdyaln_users_certificate WHERE session = ? ";
+  $findUser = "SELECT * FROM users_certificate WHERE session = ? ";
   $findUser_stmt = $connection->prepare($findUser);
   $findUser_stmt->execute(array($cookie));
   $findUser_stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -12,7 +12,7 @@ function findUserNameBySession($connection, $cookie){
 }
 
 function findUserByUsername($connection, $username){
-  $findUserInfo = "SELECT * FROM `wowdyaln_users` WHERE `username` = ? ";
+  $findUserInfo = "SELECT * FROM `users` WHERE `username` = ? ";
   $findUserInfo_stmt = $connection->prepare($findUserInfo);
   $findUserInfo_stmt->execute(array($username));
   $findUserInfo_stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -23,7 +23,7 @@ function findUserByUsername($connection, $username){
 
 
 function findUserById($connection, $user_id){
-  $findUserInfo = "SELECT * FROM `wowdyaln_users` WHERE `id` = ? ";
+  $findUserInfo = "SELECT * FROM `users` WHERE `id` = ? ";
   $findUserInfo_stmt = $connection->prepare($findUserInfo);
   $findUserInfo_stmt->execute(array($user_id));
   $findUserInfo_stmt->setFetchMode(PDO::FETCH_ASSOC);

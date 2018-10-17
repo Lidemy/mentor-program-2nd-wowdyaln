@@ -11,7 +11,7 @@
 
       // 預防 XSS 腳本寫入攻擊
       $comment = htmlspecialchars($_POST['sub_comment'], ENT_QUOTES);
-      $write_subComment_stmt = $conn->prepare("INSERT INTO `wowdyaln_sub_comments` (`id`, `comment_id`, `sub_content`, `created_at`, `user_id`) VALUES (NULL, ?, ?, CURRENT_TIMESTAMP, ? )");
+      $write_subComment_stmt = $conn->prepare("INSERT INTO `sub_comments` (`id`, `comment_id`, `sub_content`, `created_at`, `user_id`) VALUES (NULL, ?, ?, CURRENT_TIMESTAMP, ? )");
 
       if ( $write_subComment_stmt->execute(array($_POST['comment_id'], $comment, $userId)) ) {
         // INSERT INTO success

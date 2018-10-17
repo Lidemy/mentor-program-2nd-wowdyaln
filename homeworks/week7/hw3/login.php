@@ -13,18 +13,18 @@ $username = $user['username'];
 // 前端的 password 經過hash 之後，跟 後端 hash 比對看看有沒有相同。
 if ( password_verify($_POST['password'], $hash) ){
     // verify passed
-    $findSession = "SELECT * FROM `wowdyaln_users_certificate` WHERE `username` = '{$username}' ";
+    $findSession = "SELECT * FROM `users_certificate` WHERE `username` = '{$username}' ";
     $newSession = session_create_id();
 
   if ( $conn->query($findSession)->rowCount() === 1){
     $oldSession = $conn->query($findSession)->fetch(PDO::FETCH_ASSOC)['session'];
-    $updateSession = "UPDATE `wowdyaln_users_certificate` SET `session` = '{$newSession}' WHERE `wowdyaln_users_certificate`.`session` = '{$oldSession}' ";
+    $updateSession = "UPDATE `users_certificate` SET `session` = '{$newSession}' WHERE `users_certificate`.`session` = '{$oldSession}' ";
     $conn->query($updateSession);
     setcookie("week5", $newSession, time() + 60 * 60);
     header("Location: ./boots_layout.php");
     
   } else {
-    $saveSession = "INSERT INTO `wowdyaln_users_certificate` (`session`, `username`) VALUES ('{$newSession}', '{$username}')";
+    $saveSession = "INSERT INTO `users_certificate` (`session`, `username`) VALUES ('{$newSession}', '{$username}')";
     $conn->query($saveSession);
     setcookie("week5", $newSession, time() + 60 * 60);
     header("Location: ./boots_layout.php");

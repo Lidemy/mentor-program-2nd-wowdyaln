@@ -11,7 +11,7 @@
 
   // password 要經過 hash function，存 hash 進資料庫。
   $hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-  $signup_stmt = $conn->prepare("INSERT INTO `wowdyaln_users` (`id`, `username`,nickname, `password`) VALUES (NULL, ?, ?, ?) ");
+  $signup_stmt = $conn->prepare("INSERT INTO `users` (`id`, `username`,nickname, `password`) VALUES (NULL, ?, ?, ?) ");
 
   try {
     $signup_stmt->execute(array($username, $nickname, $hash));

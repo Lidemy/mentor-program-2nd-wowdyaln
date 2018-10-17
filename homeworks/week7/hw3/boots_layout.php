@@ -80,7 +80,7 @@
             ";
       }
 // howManyComments
-      $howManyComments_sql = "SELECT COUNT(id) AS comment_count FROM wowdyaln_comments";
+      $howManyComments_sql = "SELECT COUNT(id) AS comment_count FROM comments";
       $res = $conn->query($howManyComments_sql);
       $comments_count = $res->fetch(PDO::FETCH_ASSOC);
       // how many pages ?
@@ -93,8 +93,8 @@
         $current_page = $_GET['page'];
       }
       $from = ($current_page-1)*10;
-        // read 10 main wowdyaln_comments depend on current page.
-      $readAll = "SELECT * FROM `wowdyaln_comments` ORDER BY created_at DESC LIMIT 10 OFFSET {$from} ";
+        // read 10 main comments depend on current page.
+      $readAll = "SELECT * FROM `comments` ORDER BY created_at DESC LIMIT 10 OFFSET {$from} ";
       $result = $conn->query($readAll);
         
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
@@ -163,14 +163,18 @@
                                       <span aria-hidden='true'>&times;</span>
                                     </button>
                                   </div>
-                                <form action=./action/delete_comment.php method=post>
+                                  
+                                  <form>
+                                                            <!-- <form action=./action/delete_comment.php method=post> -->
+
                                   <div class='modal-body'>
                                       <p>{$content}</p>
                                       <span aria-hidden='true'>子留言也會一併刪除。刪除之後無法復原，確定嗎？</span>
-                                      <input type=hidden name=comment_id value={$id}>
+                                      
                                   </div>
-                                      <div class='modal-footer'>
-                                      <button type=submit class='btn btn-danger'>確定</button>
+                                  <div class='modal-footer'>
+                                      <input type=hidden name=comment_id value={$id}>
+                                      <button type=submit class='btn btn-danger' data-dismiss='modal'>確定</button>
                                       <button type='button' class='btn btn-info' data-dismiss='modal'>取消</button>
                                   </div>
                                 </form>
@@ -184,7 +188,7 @@
                   }
 
             // read all sub_comments from mySQL
-            $read_subAll = "SELECT * FROM `wowdyaln_sub_comments` WHERE comment_id = $id ORDER BY created_at DESC";
+            $read_subAll = "SELECT * FROM `sub_comments` WHERE comment_id = $id ORDER BY created_at DESC";
             $sub_result = $conn->query($read_subAll);
 
             // if ($sub_result->num_rows > 0) {

@@ -3,7 +3,7 @@
   require_once('./db/conn.php');
 
   $session = $_COOKIE['week5'];
-  $removeSession_stmt = $conn->prepare("DELETE FROM `wowdyaln_users_certificate` WHERE `wowdyaln_users_certificate`.`session` = ? ");
+  $removeSession_stmt = $conn->prepare("DELETE FROM `users_certificate` WHERE `users_certificate`.`session` = ? ");
   
   if ( $removeSession_stmt->execute(array($_COOKIE['week5'])) ){
     // remove session from mySQL success.

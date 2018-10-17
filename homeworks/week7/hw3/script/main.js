@@ -1,7 +1,37 @@
 $(document).ready( ()=> {
   console.log('jquery done.!!');
+  // handler
+  function deleteComment(e) {
 
-  // 使用 ajax 送 request 給後端
+    // 從前端拿到資料，傳到後端
+    let deleteId = $(e.target).prev().val()
+    let deleteDom = $(e.target).closest('.card.border-success.mt-3')
+    // 從前端拿到資料，傳到後端
+
+
+    $.ajax({
+      type: "POST",
+      url: "./action/delete_comment.php",
+      data: {
+        comment_id: deleteId
+      },
+      success: () => {
+        console.log("delete success!!");
+
+        $('#main-comment-box').append(
+          `<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong> 成功刪除主留言 （ ${deleteId} ） ! </strong> 子留言也都沒了...
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>`
+        )
+      }
+    })
+    deleteDom.fadeOut(2000)
+  }
+
+  // create main comment. 使用 ajax 送 request 給後端
   $('#comment_ajax').submit( (e)=> {
     e.preventDefault()
     console.log('submit evnet !');
@@ -58,7 +88,10 @@ $(document).ready( ()=> {
                       <span aria-hidden="true">×</span>
                     </button>
                   </div>
-                  <form action="./action/edit_comment.php" method="post">
+                                              <!-- <form action="./action/edit_comment.php" method="post"> -->
+
+                  <form class='delete_comment'>
+                  
                     <div class="modal-body">
                       <input type=hidden name=comment_id value=${last_id}>
                       <label for="main_comment" class="mb-0">主留言</label>
@@ -89,16 +122,18 @@ $(document).ready( ()=> {
                       <span aria-hidden="true">×</span>
                     </button>
                   </div>
-                  <form action="./action/delete_comment.php" method="post">
+                  <form>
+                          <!-- <form action=./action/delete_comment.php method=post> -->
+
                     <div class="modal-body">
                       <p>${comment}</p>
-                      <span aria-hidden="true">刪除之後無法復原，確定嗎？</span>
-                      <input type=hidden name=comment_id value=${last_id}>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="submit" class="btn btn-danger">確定</button>
-                      <button type="button" class="btn btn-info" data-dismiss="modal">取消</button>
-                    </div>
+                      <span aria-hidden="true">子留言也會一併刪除。刪除之後無法復原，確定嗎？</span>
+                      </div>
+                      <div class="modal-footer">
+                        <input type=hidden name=comment_id value=${last_id}>
+                        <button type=submit class='btn btn-danger' data-dismiss='modal'>確定</button>
+                        <button type="button" class="btn btn-info" data-dismiss="modal">取消</button>
+                      </div>
                   </form>
                 </div>
               </div>
@@ -133,9 +168,10 @@ $(document).ready( ()=> {
 
           mainCommentDom.after(newCommentDom)
           newCommentDom.hide().fadeIn(2000)
+          // https://stackoverflow.com/questions/8408826/bind-event-only-once
+          $('button.btn.btn-danger').off('click').click( (e) => { deleteComment(e) })
       }   //  success function
     })    // $.ajax
-                            
 
     $('html, body').animate({
       scrollTop: 0
@@ -143,4 +179,6 @@ $(document).ready( ()=> {
 
     $('#main_comment').val("")
   })
+  // delete main comment with Ajax.
+  $('button.btn.btn-danger').click( (e) => { deleteComment(e) })
 })
