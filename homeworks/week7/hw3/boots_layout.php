@@ -4,11 +4,13 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" type="text/css" media="screen" href="./css/minty.min.css">
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.3/minty/bootstrap.min.css" rel="stylesheet" integrity="sha384-Qt9Hug5NfnQDGMoaQYXN1+PiQvda7poO7/5k4qAmMN6evu0oDFMJTyjqaoTGHdqf" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" media="screen" href="./css/boots_layout.css">
   <title>Minty board</title>
 </head>
 <?php
+  session_start();
+
   //conncet to mySQL
   require_once './db/conn.php';
   require_once './db/findUser.php';
@@ -16,8 +18,8 @@
   $username = false;   //current user's name
   $unId = false;       //current user's id
   
-  if ( isset($_COOKIE["week5"])){ // find a user according to Cookies.
-    $username = findUserNameBySession($conn, $_COOKIE['week5']);
+  if ( isset($_SESSION['username']) ){ // find a user according to Cookies.
+    $username = $_SESSION['username'];
     $unId = findUserByUsername($conn, $username)['id'];
     $nk = findUserByUsername($conn, $username)['nickname'];
   }
@@ -285,9 +287,13 @@
 </div><!-- container -->
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="./script/jquery.js"></script>
-    <script src="./script/popper.min.js"></script>
-    <script src="./script/bootstrap.min.js"></script>
+    <script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="./script/main.js"></script>
   </body>
 </html>

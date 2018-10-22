@@ -30,44 +30,30 @@ $replys = [
 ];
 
 // 取得 users 的所有 id, 存成 userIds
-$getUserId = "SELECT id FROM users ";
+// $getUserId = "SELECT id FROM users ";
 $userIds = [];
-if ($conn->query($getUserId)) {
-    $temp = $conn->query($getUserId);
 
-    if ($temp->num_rows > 0) {
-        while ($row = $temp->fetch_assoc()) {
-            $id = $row['id'];
-            array_push($userIds, $id);
-        }
-    } else {
-      echo " Error: {$conn->error} :
-                      sql: {$getUserId}  ";
-    }
+$getUserIds = $conn->query("SELECT id FROM users ");
+while ($row = $getUserIds->fetch(PDO::FETCH_ASSOC)) {
+    $id = $row['id'];
+    array_push($userIds, $id);
 }
-// var_dump($userIds);
+
 
 // 取得 comments 的所有 id, 存成 commentsIds
-$getCommentsId = "SELECT id FROM comments";
+// $getCommentsId = "SELECT id FROM comments";
 $commentsIds = [];
 
-if ($conn->query($getCommentsId)) {
-  $temp = $conn->query($getCommentsId);
-
-  if ($temp->num_rows > 0) {
-    while ($row = $temp->fetch_assoc()) {
-      $id = $row["id"];
-      array_push($commentsIds, $id);
-    }
-  } else {
-      echo " Error: {$conn->error} :
-                      sql: {$getCommentsId}  ";
-  }
+$getCommentsIds = $conn->query("SELECT id FROM comments ");
+while ( $row = $getCommentsIds->fetch(PDO::FETCH_ASSOC) ) {
+    $id = $row['id'];
+    array_push($commentsIds, $id);
 }
+
 // var_dump($commentsIds);
 
 // create new sub_comments to mySQL
-for ($i=0; $i < 120; $i++){
+for ($i=0; $i < 30; $i++){
   $comment_id = $commentsIds[mt_rand(0, count($commentsIds) - 1)];
   $reply = $replys[ mt_rand(0, count($replys)-1 )];
   $user_id = $userIds[ mt_rand(0, count($userIds)-1 )];

@@ -1,3 +1,12 @@
 div#main-comment-box {
   border-width: medium;
 }
+
+.row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.col-10 {
+    margin: 5px;
+}

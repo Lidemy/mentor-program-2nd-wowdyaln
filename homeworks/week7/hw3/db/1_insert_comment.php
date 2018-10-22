@@ -1,20 +1,15 @@
 <?
 require './conn.php';
 
-$getUserId = "SELECT id FROM users ";
 $userIds = [];
 
-if ($conn->query($getUserId) ){
-  $temp = $conn->query($getUserId);
-
-  if( $temp->num_rows > 0){
-    while ($row = $temp->fetch_assoc()){
-      $id = $row['id'];
-      array_push($userIds, $id);
-    }
-  }
+$getUserIds = $conn->query("SELECT id FROM users ");
+while ($row = $getUserIds->fetch(PDO::FETCH_ASSOC)) {
+    $id = $row['id'];
+    array_push($userIds, $id);
 }
-// var_dump($userIds);
+
+// getUserId($conn);
 
 $comments = [
   "人類要黴菌只是為了它的酵素。黴菌可能需要空氣，但是酵素不需要。"
@@ -44,7 +39,7 @@ $comments = [
 ,"蓬萊米比較短而黏，壽司米屬於這種。"
 ];
 
-for ($i=0; $i < 20; $i++){
+for ($i=0; $i < 10; $i++){
   $user_id = $userIds[ mt_rand(0, count($userIds)-1 )];
   $content = $comments[ mt_rand(0, count($comments)-1 )];
 

@@ -1,10 +1,10 @@
 <?php
+  session_start();
+
   require_once '../db/conn.php';
   require_once '../db/findUser.php';
-  $username = findUserNameBySession($conn, $_COOKIE['week5']);
 
-  $findUserId = "SELECT id FROM users WHERE username = '{$user}'";
-  $userId = findUserByUsername($conn, $username)['id'];
+  $userId = findUserByUsername($conn, $_SESSION['username'])['id'];
   // 預防 XSS 腳本寫入攻擊
   $comment = htmlspecialchars($_POST['main_comment'], ENT_QUOTES);
 
