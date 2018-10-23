@@ -1,11 +1,11 @@
 <?php
+  session_start();
+
   //conncet to mySQL
   require_once '../db/conn.php';
   require_once '../db/findUser.php';
 
-  // find a user according to Cookies.
-  $username = findUserNameBySession($conn, $_COOKIE['week5']);
-  $user = findUserByUsername($conn, $username);
+  $user = findUserByUsername($conn, $_SESSION['username']);
   $nickname = $user['nickname'];
   
   $raw_comment = $_POST['main_comment'];

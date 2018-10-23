@@ -4,6 +4,7 @@ $db_name = "";
 $db_user = "";
 $db_password = "";
 
+
 $dsn = "mysql:host=$db_host;dbname=$db_name;charset=utf8";
 
 try {
@@ -16,6 +17,3 @@ try {
 }
 
 ?>
-
-
-

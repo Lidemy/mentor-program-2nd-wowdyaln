@@ -1,5 +1,6 @@
 <?
 
+
 function findUserNameBySession($connection, $cookie){
   $findUser = "SELECT * FROM users_certificate WHERE session = ? ";
   $findUser_stmt = $connection->prepare($findUser);

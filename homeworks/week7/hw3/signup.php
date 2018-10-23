@@ -1,5 +1,3 @@
-<link rel="stylesheet" type="text/css" media="screen" href="./css/minty.min.css">
-
 <?
   require_once './db/conn.php';
   require_once './db/autoLogin.php';

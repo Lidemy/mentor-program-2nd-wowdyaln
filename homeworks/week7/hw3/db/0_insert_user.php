@@ -234,8 +234,8 @@ $nicknames = [
 ];
 
 try {
-    $conn->autocommit(false);
-    $conn->begin_transaction();
+    $conn->setAttribute(PDO::ATTR_AUTOCOMMIT, 0);
+    $conn->beginTransaction();
 
     for ($i = 0; $i < count($users); $i++) {
         $user = $users[$i];
