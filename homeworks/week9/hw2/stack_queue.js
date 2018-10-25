@@ -37,11 +37,30 @@ function Queue() {
 var stack = new Stack()
 stack.push(10)
 stack.push(5)
-console.log(stack.pop()) // 5
-console.log(stack.pop()) // 10
+console.log(stack.pop()) 
+console.log(stack.pop()) 
+stack.push("A")
+stack.push("B")
+stack.pop()
+stack.pop()
+stack.pop()
+stack.pop()
+stack.push("C")
+stack.push("D")
+console.log(stack.pop()) 
+
 
 var queue = new Queue()
 queue.push(1)
 queue.push(2)
-console.log(queue.pop()) // 1
-console.log(queue.pop()) // 2
+console.log(queue.pop()) 
+console.log(queue.pop()) 
+queue.push("A")
+queue.push("B")
+queue.pop()
+queue.pop()
+queue.pop()
+queue.pop()
+queue.push("C")
+queue.push("D")
+console.log(queue.pop()) 
