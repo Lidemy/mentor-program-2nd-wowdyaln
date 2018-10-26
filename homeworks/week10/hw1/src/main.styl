@@ -1,0 +1,89 @@
+greyA = rgb(226, 223, 223)
+greyB = #F2F5F7
+greyC = rgb(190, 201, 207)
+
+blueA = #00a0e9
+
+.loginStatus 
+  position: fixed
+  left: 10px
+  top: 80px
+  color: grey
+
+label 
+  margin: 5px
+
+.container 
+  display: flex
+  flex-direction: column
+  justify-content: center
+  margin: 20px auto
+
+  &__input 
+    width: 80%
+    margin: 20px auto
+    padding: 5px
+    display: flex
+    flex-direction: column
+    border: solid gold 
+    background-color: snow
+
+  &__box 
+    width: 80%
+    margin: 5px auto
+    display: flex
+    flex-direction: column
+    background-color: greyA
+
+button 
+  margin: 20px
+  font-size: 18px
+  background-color: blueA
+  color: white
+  font-weight: 400
+  line-height: 1.42857143
+  text-align: center
+  white-space: nowrap
+  vertical-align: middle
+  cursor: pointer
+  border: 1px solid transparent
+  border-radius: 4px
+
+.box
+  &__nickname 
+    margin: 10px
+    font-size: 24px
+
+  &__content 
+    margin: 5px 10px
+
+  &__reply 
+    width: 80%
+    border: dashed green
+    background-color: greyB
+    margin: 15px 10% 0px 10%
+    display: flex
+    flex-direction: column
+
+  &__authorReply 
+    width: 80%
+    border: dashed orange
+    background-color: greyC
+    margin: 15px 10% 0px 10%
+    display: flex
+    flex-direction: column
+
+.reply
+  &__nickname 
+    margin: 5px 10px
+    color: blueA
+
+  &__content 
+    margin: 5px 10px
+    color: black
+
+.page 
+  display: flex
+  font-size: 26px
+  justify-content: space-evenly
+  margin-bottom: 30px
