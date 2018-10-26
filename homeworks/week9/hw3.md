@@ -25,28 +25,53 @@ https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTi
 
 | stack        |  callback Queue  |
 | ----------- | ----------- |
-|    console.log(1) | ( )=>{console.log(2)} ,  ( )=>{console.log(4)}
+|    console.log(1) | 
+|    setTimeout(..2) | 
 |    console.log(3) |
+|    setTimeout(..4) | 
 |    console.log(5) |
 
 | stack        |  callback Queue  |
 | ----------- | ----------- |
-|   x  | ( )=>{console.log(2)} ,  ( )=>{console.log(4)}
+|    x| 
+|    setTimeout(..2) | 
 |    console.log(3) |
+|    setTimeout(..4) | 
 |    console.log(5) |
 
-**印出 1**
+
+**印出1**
+
+| stack        |  callback Queue  |
+| ----------- | ----------- |
+|    | ( )=>{console.log(2)}
+|    console.log(3) |
+|    setTimeout(..4) | 
+|    console.log(5) |
+
+
+setTimeout 計時完畢，callback function 丟到 callback Queue 去排隊。
+
+| stack        |  callback Queue  |
+| ----------- | ----------- |
+|    | ( )=>{console.log(2)}
+|    x |
+|    setTimeout(..4) | 
+|    console.log(5) |
+
+**印出3**
+
+| stack        |  callback Queue  |
+| ----------- | ----------- |
+|    | ( )=>{console.log(2)} ;  ( )=>{console.log(4)}
+|   x | 
+|    console.log(5) |
+setTimeout 計時完畢，callback function 丟到 callback Queue 去排隊。
+
+
 | stack        |  callback Queue  |
 | ----------- | ----------- |
 |     | ( )=>{console.log(2)} ,  ( )=>{console.log(4)}
-|   x  |
-|    console.log(5) |
-
-**印出 3**
-| stack        |  callback Queue  |
-| ----------- | ----------- |
-|     | ( )=>{console.log(2)} ,  ( )=>{console.log(4)}
-|     |
 |x |
 
 **印出 5**
@@ -92,7 +117,6 @@ https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTi
 
 | stack        |  callback Queue  |
 | ----------- | ----------- |
-|     |  
 |   x  |  
 
 結束。
