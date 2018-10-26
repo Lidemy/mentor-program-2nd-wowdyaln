@@ -1,0 +1,92 @@
+colorA = rgba(106,224,216,1)
+colorB = rgba(156,194,247,1)
+colorC = rgba(98,212,239,1)
+greyA = rgb(190, 186, 186)
+
+
+body 
+  background: colorA
+  background: linear-gradient(0deg, colorA 0%, colorB 50%, colorC 100%)
+
+.selector 
+  margin: 10px auto
+  text-align: center
+
+.gameTitle 
+  margin: 30px auto
+  text-align: center
+
+.container 
+  display: inline-flex
+  flex-direction: row
+  flex-wrap: wrap
+  justify-content: center
+  margin: 20px auto
+
+  &__box 
+    width: 300px
+    height: 280px
+    margin: 10px
+    display: flex
+    flex-direction: column
+    transition: transform .2s
+
+    &:hover 
+        transform: scale(1.03)
+
+
+.box
+  &__video
+  &__video img 
+    width: 300px
+    height: 200px
+
+  &__avatar 
+    display: flex
+    align-items: center
+    background-color: #000
+    opacity: 0.85
+    width: 300px
+    height: 105px
+
+
+.avatar
+  &__img 
+    border-radius: 50%
+    border: 1px solid grey
+    background-size: 50px 50px
+    width: 70px
+    height: 70px
+    margin: 10px
+    z-index: 100
+
+  &__info 
+    width: 210px
+    margin: 5px
+    display: flex
+    flex-direction: column
+    align-items: flex-end
+
+h6 
+  color: white
+  margin: 0px
+  width: 200px
+  white-space: nowrap
+  overflow: hidden
+
+.info
+  &__status 
+    text-overflow: ellipsis
+    color: greyA
+    font-size: 12px
+
+  &__host 
+    text-overflow: ellipsis
+    font-size: 16px
+
+  &__timeLast 
+    text-overflow: ellipsis
+    text-align: end
+    font-size: 8px
+
+
