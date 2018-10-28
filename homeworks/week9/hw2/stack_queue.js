@@ -1,40 +1,42 @@
 // stack
 function Stack() {
-  let obj = {}
-  let i = 0
-
-  this.push = function (value) {
-    obj[i] = value
-    i++
-  }
-
-  this.pop = function () {
-    i--
-    return obj[i]
-  }
+  this.obj = {}
+  this.i = 0
 }
+
+Stack.prototype.push = function (value) {
+  this.obj[this.i] = value
+  this.i++
+}
+Stack.prototype.pop = function () {
+  this.i--
+  return this.obj[this.i]
+}
+
 
 // queue
 function Queue() {
-  let obj = {}
-  let i = 0
-  let k = -1
+  this.obj = {}
+  this.i = 0
+  this.k = -1
+}
 
-  this.push = function (value) {
-    obj[i] = value
-    i++
-  }
+Queue.prototype.push = function (value) {
+  this.obj[this.i] = value
+  this.i++
+}
 
-  this.pop = function () {
-    if (k+1 === i) return  // 如果 obj 沒有東西了，就不能再 pop
+Queue.prototype.pop = function () {
+  if (this.k + 1 === this.i) return  // 如果 obj 沒有東西了，就不能再 pop
 
-    k++
-    return obj[k]
-  }
+  this.k++
+  return this.obj[this.k]
 }
 
 // test
 var stack = new Stack()
+console.log(stack.i);
+console.log(stack.obj);
 stack.push(10)
 stack.push(5)
 console.log(stack.pop()) 
