@@ -31,7 +31,7 @@ Object.keys(db).forEach(modelName => {
   }
 });
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+db.sequelize = sequelize; // 上面建立的資料庫連線
+db.Sequelize = Sequelize; // 整包 npm
 
 module.exports = db;
