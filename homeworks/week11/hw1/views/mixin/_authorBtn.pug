@@ -1,0 +1,46 @@
+
+mixin EditDeleteBtn(comment= {id: 10, content: "have a nice day."})
+  //- todo: js 互動功能
+  - id = comment.id
+  - content = comment.content
+  .d-flex.justify-content-around
+    div
+      // Button trigger modal
+      button.btn.btn-outline-warning(type='button' data-toggle='modal' data-target=`#editModal${id}`) 編輯主留言
+      // Modal
+      .modal.fade(id=`editModal${id}` tabindex='-1' role='dialog' aria-labelledby='editModalLabel' aria-hidden='true')
+        .modal-dialog(role='document')
+          .modal-content
+            .modal-header
+              h5#editModalLabel.modal-title 編輯 主留言
+              button.close(type='button' data-dismiss='modal' aria-label='Close')
+                span(aria-hidden='true') &times;
+            form
+              // <form action=./action/edit_comment.php method=post>
+              .modal-body
+                label.mb-0(for='main_comment') 主留言
+                textarea.form-control(rows='2' name='main_comment' required='') #{content}
+              .modal-footer
+                input.comment_id(type='hidden' name='comment_id' value=`${id}`)
+                button.btn.btn-primary(type='submit' data-dismiss='modal') 送出
+                button.btn.btn-secondary(type='button' data-dismiss='modal') 取消
+    div
+      // Button trigger modal
+      button.btn.btn-outline-danger(type='button' data-toggle='modal' data-target=`#deleteModal${id}`) 刪除主留言
+      // Modal
+      .modal.fade(id=`deleteModal${id}` tabindex='-1' role='dialog' aria-labelledby='deleteModalLabel' aria-hidden='true')
+        .modal-dialog(role='document')
+          .modal-content
+            .modal-header
+              h5#deleteModalLabel.modal-title 確定刪除 主留言？
+              button.close(type='button' data-dismiss='modal' aria-label='Close')
+                span(aria-hidden='true') &times;
+            form
+              // <form action=./action/delete_comment.php method=post>
+              .modal-body
+                p #{content}
+                span(aria-hidden='true') 子留言也會一併刪除。刪除之後無法復原，確定嗎？
+              .modal-footer
+                input(type='hidden' name='comment_id' value=`${id}`)
+                button.btn.btn-danger(type='submit' data-dismiss='modal') 確定
+                button.btn.btn-info(type='button' data-dismiss='modal') 取消

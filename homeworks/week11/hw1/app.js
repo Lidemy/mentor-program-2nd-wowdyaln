@@ -21,7 +21,7 @@ app.set('views', path.join(__dirname, 'views')) // this is the folder where we k
 app.set('view engine', 'pug') // we use the engine pug, mustache or EJS work great too
 
 // serves up static files from the public folder. Anything in public/ will just be served up as the file it is
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, '/public')))
 
 // Takes the raw requests and turns them into usable properties on req.body
 app.use(bodyParser.json())
@@ -49,14 +49,21 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // The flash middleware let's us use req.flash('error', 'Shit!'), which will then pass that message to the next page the user requests
 // app.use(flash())
 
-// pass variables to our templates + all requests
-// app.use((req, res, next) => {
-//   res.locals.h = helpers
-//   res.locals.flashes = req.flash()
-//   res.locals.user = req.user || null
-//   res.locals.currentPath = req.path
-//   next()
-// })
+/*
+在調用res.render的時候，express合併（merge）了3處的結果後傳入要渲染的模板
+優先順序：res.render傳入的對象> res.locals對象> app.locals對象
+所以app.locals和res.locals幾乎沒有區別，
+使用上的區別在於：app.locals上通常掛載常量信息（如博客名、描述、作者信息）
+res.locals上通常掛載變量信息，即每次請求可能的值都不一樣（如請求者信息，res.locals.user = req.session.user）
+*/
+// http://expressjs.com/en/4x/api.html#res.locals
+app.use((req, res, next) => {
+  res.locals.h = helpers
+  // res.locals.flashes = req.flash()
+  res.locals.user = req.user || null
+  res.locals.currentPath = req.path
+  next()
+})
 
 // promisify some callback based APIs
 // app.use((req, res, next) => {

@@ -1,0 +1,22 @@
+include _authorBtn
+include _subComments
+
+mixin allComments(commentsList)
+  
+  each comment in commentsList
+    .card.border-success.m-3
+      .card-header
+        | main comment #{comment.id}.  Post at : #{comment.createdAt}
+      .card-body
+        h4.card-title 暱稱: #{comment.author.nickname}
+        h5 #{comment.content}
+
+        //- comment's author can 'edit' / 'delete' it.
+      if (currentUserId == comment_id)
+        +EditDeleteBtn()
+
+      //- allSubComments(mainAuthor, subs)
+      +allSubComments( comment.author, comment.subComments )
+
+      if (isLogin)
+      +subCommentForm()
