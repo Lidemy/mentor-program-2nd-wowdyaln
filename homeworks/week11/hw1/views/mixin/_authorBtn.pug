@@ -1,8 +1,6 @@
 
-mixin EditDeleteBtn(comment= {id: 10, content: "have a nice day."})
-  //- todo: js 互動功能
-  - id = comment.id
-  - content = comment.content
+mixin EditDeleteBtn(content, id)
+
   .d-flex.justify-content-around
     div
       // Button trigger modal
@@ -12,17 +10,17 @@ mixin EditDeleteBtn(comment= {id: 10, content: "have a nice day."})
         .modal-dialog(role='document')
           .modal-content
             .modal-header
-              h5#editModalLabel.modal-title 編輯 主留言
+              h5#editModalLabel.modal-title 編輯 主留言 （ #{id} ）
               button.close(type='button' data-dismiss='modal' aria-label='Close')
                 span(aria-hidden='true') &times;
+
             form
-              // <form action=./action/edit_comment.php method=post>
               .modal-body
                 label.mb-0(for='main_comment') 主留言
                 textarea.form-control(rows='2' name='main_comment' required='') #{content}
               .modal-footer
-                input.comment_id(type='hidden' name='comment_id' value=`${id}`)
-                button.btn.btn-primary(type='submit' data-dismiss='modal') 送出
+                //- input.comment_id(type='hidden' name='comment_id' value=`${id}`)
+                button.btn.btn-primary.editComment(type='button'  data-dismiss='modal' data-comment_id=`${id}`) 送出
                 button.btn.btn-secondary(type='button' data-dismiss='modal') 取消
     div
       // Button trigger modal
@@ -32,10 +30,10 @@ mixin EditDeleteBtn(comment= {id: 10, content: "have a nice day."})
         .modal-dialog(role='document')
           .modal-content
             .modal-header
-              h5#deleteModalLabel.modal-title 確定刪除 主留言？
+              h5#deleteModalLabel.modal-title 確定刪除 主留言？ （ #{id} ）
               button.close(type='button' data-dismiss='modal' aria-label='Close')
                 span(aria-hidden='true') &times;
-            form
+            form(action=`/comments/${id}`  method='delete')
               // <form action=./action/delete_comment.php method=post>
               .modal-body
                 p #{content}

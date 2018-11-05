@@ -1,43 +1,46 @@
-mixin commentForm(user = {})
+mixin commentForm(user)
 
-    button.mt-3.btn.btn-outline-warning(type='button' data-toggle='modal' data-target='#createComment') 我要留言
-    .modal.fade(id='createComment' tabindex='-1' role='dialog' aria-labelledby='editModalLabel' aria-hidden='true')
+    //- button#commentForm.mt-3.btn.btn-outline-warning(type='button' data-toggle='modal' data-target='#createComment') cool
+    i.fas.fa-plus-circle(type='button' data-toggle='modal' data-target='#createComment') 
+      
+    .modal.fade(id='createComment' tabindex='-1' role='dialog' aria-labelledby='newCommentModalLabel' aria-hidden='true')
       .modal-dialog(role='document')
         .modal-content
           .modal-header
-            h5#editModalLabel.modal-title (#{user.username}) 我想說 ...
+            h5#newCommentModalLabel.modal-title (#{user}) 我想說 ...
             button.close(type='button' data-dismiss='modal' aria-label='Close')
               span(aria-hidden='true') &times;
           form
-            // <form action=./action/edit_comment.php method=post>
+            //- form#submitComment(action='/comments' method='post')
             .modal-body
               label.mb-0(for='main_comment') 主留言
-              textarea.form-control(rows='10' name='main_comment' required='true')
+              textarea.form-control.required(rows='10' name='main_comment')
             .modal-footer
-              input.comment_id(type='hidden' name='comment_id' value=`${user}`)
               button#submitComment.btn.btn-primary(type='submit' data-dismiss='modal') 送出
+              
 
 
 
+mixin subCommentForm(currentUser, comment_id)
 
+    .accordion.mt-2(id=`accordion${comment_id}`)
+      .card
+        .card-header(id=`heading${comment_id}`)
+          h5.mb-0
+            button.btn.btn-link(type='button' data-toggle='collapse' data-target=`#collapse${comment_id}` aria-expanded='true' aria-controls=`collapse${comment_id}`)
+              i.far.fa-comments    在此回覆
+              
+        .collapse.hide(id=`collapse${comment_id}` aria-labelledby=`heading${comment_id}` data-parent=`#accordion${comment_id}`)
+          .card-body
+            p.m-2 ( #{currentUser} ) 我想在主留言（ #{comment_id} ）之下，回應 ...
 
-mixin subCommentForm(user = {})
-
-    button.m-3.btn.btn-outline-info(type='button' data-toggle='modal' data-target='#createSubComment') 子留言
-    .modal.fade(id='createSubComment' tabindex='-1' role='dialog' aria-labelledby='editModalLabel' aria-hidden='true')
-      .modal-dialog(role='document')
-        .modal-content
-          .modal-header
-            h5#editModalLabel.modal-title (#{user.username}) 我想在主留言（ #{comment_id} ）之下，回應 ...
-            button.close(type='button' data-dismiss='modal' aria-label='Close')
-              span(aria-hidden='true') &times;
-          form
-            // <form action=./action/edit_comment.php method=post>
-            .modal-body
-              label.mb-0(for='main_comment') 子留言
-              textarea.form-control(rows='10' name='main_comment' required='true')
-            .modal-footer
-              input.comment_id(type='hidden' name='comment_id' value=`${user}`)
-              button#submitSubComment.btn.btn-primary(type='submit' data-dismiss='modal') 送出
-              button.btn.btn-secondary(type='button' data-dismiss='modal') 取消
+            form(action=`/comments/${comment_id}` method="post")
+  
+              .modal-body
+                label.mb-0(for='main_comment') 子留言
+                textarea.form-control(rows='5' name='sub_comment' required='true')
+              .modal-footer
+                //- input.comment_id(type='hidden' name='comment_id' value=`${comment_id}`)
+                button#submitSubComment.btn.btn-primary(type='submit') 送出
+              
 

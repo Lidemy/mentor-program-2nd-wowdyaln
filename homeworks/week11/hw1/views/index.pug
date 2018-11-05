@@ -5,12 +5,11 @@ include mixin/_pages
 
 
 block commentForm
-  if (!user)
-    h2 not login
+  if (!currentUser)
     
   else
-    +commentForm({username: "heyman"})
-    #main-comment-box
+    +commentForm(currentUser)
+    
 
 block comments
     +allComments(commentsObj)

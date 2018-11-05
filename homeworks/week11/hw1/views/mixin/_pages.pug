@@ -8,18 +8,18 @@ mixin pages(current_page, pages_count)
   nav
     ul.pagination.justify-content-center
       li.page-item
-        a.page-link(href=`./${prev}` )
+        a.page-link(href=`/comments/?page=${prev}` )
           span(aria-hidden='true') &laquo;
 
       while (i <= pages_count)
         if ( i == current_page )
           li.page-item.active
-            a.page-link(href=`./${i}`) #{i++}
+            a.page-link(href=`/comments/?page=${i}`) #{i++}
 
         else
           li.page-item
-            a.page-link(href=`./${i}`) #{i++}
+            a.page-link(href=`/comments/?page=${i}`) #{i++}
 
       li.page-item
-        a.page-link(href=`./${next}`)
+        a.page-link(href=`/comments/?page=${next}`)
           span(aria-hidden='true') &raquo;

@@ -5,20 +5,23 @@ mixin allComments(commentsList)
 
 
   each comment in commentsList
+
     - let {id, content, createdAt, author, subComments} = comment
-    .card.border-success.m-3
-      .card-header
-        | main comment #{id}.  Post at : #{createdAt}
-      .card-body
-        h4.card-title #{author.username} （ #{author.nickname} ）：
-        h5 #{content}
 
-        //- comment's author can 'edit' / 'delete' it.
-      if (currentUserId == id)
-        +EditDeleteBtn()
+    .shadow-lg.p-1.m-1.bg-white.rounded
+      .card.border-primary.m-3
+        .card-header
+          | main comment #{id}.  Post at : #{createdAt}
+        .card-body
+          h4.card-title #{author.username} （ #{author.nickname} ）：
+          h5 #{content}
 
-      //- allSubComments(mainAuthor, subs)
-      +allSubComments( author, subComments )
+          //- comment's author can 'edit' / 'delete' it.
+        if (currentUser === author.username)
+          +EditDeleteBtn(content, id)
 
-      if (isLogin)
-      +subCommentForm()
+        //- allSubComments(mainAuthor, subs)
+        +allSubComments( author, subComments )
+
+        if (currentUser)
+          +subCommentForm(currentUser, id)

@@ -9,13 +9,13 @@ html(lang="en")
 
   body.mt-5
     .container.col-8
-      a.btn.btn-outline-primary.btn-lg(href="./boots_layout.pug" role="button") 前往留言板
-      a.btn.btn-outline-warning.btn-lg.ml-5(href="#" role="button") 註冊
+      a.btn.btn-outline-primary.btn-lg(href="comments" role="button") 前往留言板
+      a.btn.btn-outline-warning.btn-lg.ml-5(href="/signup" role="button") 註冊
       .card.border-primary.mt-3
         .card-header
           h1.text-center 登入
 
-          form(action="./authLogin" method="post")
+          form( method="post")
             .card-body
               .form-row
                 .col-md-6.mb-3

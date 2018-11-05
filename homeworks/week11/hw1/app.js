@@ -1,5 +1,5 @@
 const express = require('express')
-// const session = require('express-session')
+const session = require('express-session')
 const path = require('path')
 // const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
@@ -41,10 +41,14 @@ app.use(bodyParser.urlencoded({ extended: true }))
 //   resave: false,
 //   saveUninitialized: false,
 // }))
+// todo: 詳看細節
+app.use(session({
+  secret: 'goman',
+  resave: true,
+  saveUninitialized: true,
+  cookie: { maxAge: 60 * 60 * 1000 }
+}));
 
-// Passport JS is what we use to handle our logins
-// app.use(passport.initialize())
-// app.use(passport.session())
 
 // The flash middleware let's us use req.flash('error', 'Shit!'), which will then pass that message to the next page the user requests
 // app.use(flash())

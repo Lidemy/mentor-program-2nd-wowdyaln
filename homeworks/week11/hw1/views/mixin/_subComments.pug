@@ -1,10 +1,10 @@
 mixin allSubComments(mainAuthor, subs)
   
   each sub in subs
-    - let { sub_user, sub_nk, content, createdAt } = sub
+    - let { sub_userId, sub_user, sub_nk, content, createdAt } = sub
 
     .row.justify-content-center
-      if (user_id === mainAuthor.id)
+      if ( sub_userId === mainAuthor.id)
         .card.border-danger.col-8.m-1
           .card-body
             h4.card-title.text-center Author: #{sub_user} （ #{sub_nk} ）：

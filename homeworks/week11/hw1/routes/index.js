@@ -2,41 +2,33 @@
 const express = require('express')
 const router = express.Router()
 const commentController = require('../controllers/commentController')
-const userController = require('../controllers/userController')
 const authController = require('../controllers/authController')
 
-// router.get('/', commentController.homePage )
+// show all posts
+router.get('/comments', commentController.showPage )
+// create a new post
+router.post('/comments', commentController.createMainComment)
+router.post('/comments/:comment_id', commentController.createSubComment)
 
-// router.get('/', commentController.findallsubc)
-router.get('/comments/:page', commentController.showPage )
-
-router.get('/login', userController.loginForm)
-
+// login / logout / sign up
+router.get('/login', authController.loginForm)
 router.post('/login', authController.login)
+router.get('/logout', authController.logout)
+router.get('/signup', authController.signupForm)
+router.post('/signup', authController.signup)
+
+// update a post
+router.put('/edit/comments', commentController.update)
+
+// delete a post
+router.delete('/comments/:id', commentController.delete)
 
 
 
-router.post('/createComment', commentController.create )
 
 
 
 
 
-router.get('/signup', (req, res)=> {
-  res.render('signup')
-})
-
-
-router.get('/yoyo/:name', (req, res)=> {
-// router.get('/yoyo/:name/:a/:b', (req, res)=> {
-  res.json( req.params )
-})
-
-router.post('/signup', (req, res)=> {
-  res.json( req.body )
-})
-router.post('/login', (req, res)=> {
-  res.json( req.body )
-})
 
 module.exports = router　

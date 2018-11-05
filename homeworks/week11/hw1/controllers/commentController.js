@@ -10,9 +10,12 @@ async function pagesCount(limit){
                         })
 }
 
+// Read
 exports.showPage = async (req, res, next)=> {
+    let currentUser = req.session.username
+    console.log(`currentUser = ${currentUser}`);
     // 設定目前頁數
-    let currentPage = req.params.page || 1
+    let currentPage = req.query.page ? req.query.page : 1
     // let currentPage = req.query.page || 1
 
     let limit = 10
@@ -53,6 +56,7 @@ exports.showPage = async (req, res, next)=> {
 
                 sub.sub_user = sbc.User.get({ plain: true }).username
                 sub.sub_nk = sbc.User.get({ plain: true }).nickname
+                sub.sub_userId = sbc.User.get({ plain: true }).id
 
                 card.subComments.push( sub )
             })
@@ -63,6 +67,7 @@ exports.showPage = async (req, res, next)=> {
     })
     
     res.render('index', { 
+                        currentUser,
                         commentsObj: comments,
                         currentPage: currentPage,
                         pages: pages
@@ -71,32 +76,89 @@ exports.showPage = async (req, res, next)=> {
     // next()
 }
 
-exports.create = (req, res) => {
-    // todo: 驗證身份
+// Create
+exports.createMainComment = (req, res) => {
 
-    let { user_id, main_comment } = req.body
-    console.log(user_id === "null");
-    
-    // if( false ){
-    if( user_id !== "null" && main_comment ){
+    console.log(req.body, req.session.username, req.session.nickname, req.session.user_id);
 
-        User.findById(user_id)
+    User.findByPk(req.session.user_id)
             .then((u) => {
                 u.createComment({
-                    content: `${main_comment}`
+                    content: req.body.main_comment
+                }).then( (newC)=> {
+                    let newcInfo = newC.get({ plain: true })
+                    let { content, id, createdAt } = newcInfo
+                    // console.log(newcInfo);
+                    res.json({ authorName: u.username,
+                                authorNk: u.nickname,
+                                content,
+                                id,
+                                createdAt
+                            })
                 })
+
             })
             .then( ()=> {
-                res.send('create comment success')    
+                console.log('create comment success');
+                // res.send('create main comment success!')
+                // res.json({ user: 'tobi' })
+                // res.redirect('/comments')    
             })
             .catch(err => {
                 console.log(err)
+                res.status(500).send('back-end broken ... ...');
             })
-    } else {
-        console.log("something wrong ...");
-    }
-
-    console.log(req.body);
-    
 }
 
+exports.createSubComment = (req, res)=> {
+    console.log(req.params, req.body.sub_comment, req.session.username, req.session.nickname, req.session.user_id);
+
+    Comment.findByPk(req.params.comment_id)
+            .then( (c)=> {
+                c.createSubComment({
+                    content: req.body.sub_comment,
+                    user_id: req.session.user_id
+                }).then(() => {
+                    console.log('create sub-comment success');
+                    res.redirect('/comments')
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            })
+}
+
+
+// Update
+exports.update = (req, res, next)=>{
+
+    // user_id 必須跟 req.session.id 相同
+    console.log(req.body);
+    console.log(`current user_id: ${req.session.user_id}`);
+    console.log(`current user: ${req.session.username}`);
+    console.log(`current user_nk: ${req.session.nickname}`);
+    let {comment_id, new_comment} = req.body
+    // console.log(comment_id ,  new_comment);
+
+    Comment.findByPk(comment_id, { include: ['User'] })
+            .then(c => {
+                let { username, nickname, id } = c.User.get({ plain: true })
+                console.log(`user: ${username}, ${nickname}, ${id}`)
+
+                if (id === req.session.user_id){
+                    c.update( { content: new_comment } )
+                    // res.redirect('/comments')
+                    res.send('update success!')
+                    // res.status(500).send('back-end broken ... ...');
+                    // res.redirect('/comments')
+                } else {
+                    res.status(500).send('back-end broken ... ...');
+                }
+            })
+}
+
+
+// Delete
+exports.delete = (req, res, next)=>{
+
+}
