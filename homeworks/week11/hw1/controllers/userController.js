@@ -2,7 +2,12 @@ const User = require('../models').User
 const Comment = require('../models').Comment
 const SubComment = require('../models/').SubComment
 
-exports.authLogin = (req, res)=> {
+
+exports.loginForm = (req, res, next)=> {
+    res.render('login')
+}
+
+exports.authLogin = (req, res, next)=> {
   let { username, password } = req.body
 
   User.findOne({
@@ -12,7 +17,11 @@ exports.authLogin = (req, res)=> {
       if (u && u.password === password){
         console.log(`login !! welcome !! ${u.username}`)
         res.cookie(u.username, password, {maxAge: 1000 * 60 * 3})
-        res.redirect('/')
+        // res.render('index', {user: u})
+        // req.params.page = 5
+        res.redirect('/comments/1')
+        next()
+        
       } else {
         console.log("something wrong");
       }

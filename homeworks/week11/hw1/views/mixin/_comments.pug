@@ -2,21 +2,23 @@ include _authorBtn
 include _subComments
 
 mixin allComments(commentsList)
-  
+
+
   each comment in commentsList
+    - let {id, content, createdAt, author, subComments} = comment
     .card.border-success.m-3
       .card-header
-        | main comment #{comment.id}.  Post at : #{comment.createdAt}
+        | main comment #{id}.  Post at : #{createdAt}
       .card-body
-        h4.card-title 暱稱: #{comment.author.nickname}
-        h5 #{comment.content}
+        h4.card-title #{author.username} （ #{author.nickname} ）：
+        h5 #{content}
 
         //- comment's author can 'edit' / 'delete' it.
-      if (currentUserId == comment_id)
+      if (currentUserId == id)
         +EditDeleteBtn()
 
       //- allSubComments(mainAuthor, subs)
-      +allSubComments( comment.author, comment.subComments )
+      +allSubComments( author, subComments )
 
       if (isLogin)
       +subCommentForm()

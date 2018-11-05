@@ -16,12 +16,11 @@ html(lang="en")
       nav.navbar.fixed-top.navbar-expand-lg.navbar-dark.bg-primary
         a.navbar-brand(href="/") 留言板
 
-        - let username = "cdi"
-        - let nickname = false
+        
         //- user 資訊要給 layout
 
-        if (username)
-          span.navbar-text 已登入 ✅  Hello! #{username} ( #{nickname} )
+        if (current_user)
+          span.navbar-text 已登入 ✅  Hello! #{current_user} ( #{nickname} )
         else
           span.navbar-text 未登入 ❌  要登入才能留言
           
@@ -30,16 +29,16 @@ html(lang="en")
         .collapse.navbar-collapse#navbarColor01
           ul.navbar-nav.mr-auto
 
-            if (username == 1)
+            if (current_user == 1)
 
               li.nav-item
-                a.nav-link(href='./logout')
+                a.nav-link(href='/logout')
                   i.fas.fa-sign-out-alt.fa-2x(style="color:green")
 
             else
 
               li.nav-item
-                a.nav-link(href="./login")
+                a.nav-link(href="/login")
                   i.fas.fa-sign-in-alt.fa-2x(style="color:green")
 
     .container

@@ -3,24 +3,25 @@ const express = require('express')
 const router = express.Router()
 const commentController = require('../controllers/commentController')
 const userController = require('../controllers/userController')
+const authController = require('../controllers/authController')
 
 // router.get('/', commentController.homePage )
 
 // router.get('/', commentController.findallsubc)
 router.get('/comments/:page', commentController.showPage )
 
-router.get('/login', (req, res) => {
-  res.render('login')
-})
+router.get('/login', userController.loginForm)
+
+router.post('/login', authController.login)
+
+
 
 router.post('/createComment', commentController.create )
 
 
-router.post('/authLogin', userController.authLogin)
 
 
 
-router.get('/login', )
 router.get('/signup', (req, res)=> {
   res.render('signup')
 })
