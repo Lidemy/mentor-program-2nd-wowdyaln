@@ -26,6 +26,9 @@ $(document).ready( ()=> {
           </div>
           `
         ).hide().fadeIn(1000)
+
+        deleteDom.remove()
+        // deleteDom.fadeOut(2000)
       },
       error: function(xhr, status, error) {
         let errorMsg = JSON.parse(xhr.responseText)
@@ -41,7 +44,8 @@ $(document).ready( ()=> {
         ).hide().fadeIn(1000)
       }
     })
-    deleteDom.fadeOut(2000)
+    
+    
   }
 
   function editComment(e){

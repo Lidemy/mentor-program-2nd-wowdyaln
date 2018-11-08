@@ -94,8 +94,7 @@ $(document).ready( ()=> {
                       <span aria-hidden="true">子留言也會一併刪除。刪除之後無法復原，確定嗎？</span>
                       </div>
                       <div class="modal-footer">
-                        <input type='hidden' name='comment_id' value=${id}>
-                        <button type='submit' class='btn btn-danger' data-dismiss='modal'>確定</button>
+                        <button type='submit' class='btn btn-danger deleteComment' data-dismiss='modal' data-comment_id=${id}>確定</button>
                         <button type="button" class="btn btn-info" data-dismiss="modal">取消</button>
                       </div>
                   </form>
@@ -188,12 +187,10 @@ $(document).ready( ()=> {
       },
       success: function () {
         console.log("update success!")
-        // console.log('back-end broken ... ...');
 
         // UI 改變
         panel.children(':nth-child(2)').children(':nth-child(2)').text(new_comment).hide().fadeIn(3000)
         // notify the operation is successful
-        // $('#message-box').appendTo(
         $('.message-box').append(
           `<div class="alert alert-dismissible alert-success">
               <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -218,19 +215,59 @@ $(document).ready( ()=> {
     })
   }
 
+  // 刪除主留言跟子留言
+  function deleteComment(e){
+
+    let comment_id = e.target.dataset.comment_id
+
+    console.log(comment_id);
+    // 從前端拿到資料，傳到後端
+    let deleteDom = $(e.target).closest('.shadow-lg.p-1.m-1.bg-white.rounded')
+    // let deleteDom = $(e.target).closest('.card.border-success.mt-3')
+    // 從前端拿到資料，傳到後端
+
+    $.ajax({
+      type: "DELETE",
+      url: `delete/comments/${comment_id}`,
+      // data: {
+      //   comment_id
+      // },
+      success: function () {
+        console.log("delete success!!");
+
+        $('.message-box').append(
+          `
+          <div class="alert alert-dismissible alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong> 成功刪除主留言 （ no. ${comment_id} ） ! </strong> 子留言也都沒了...
+          </div>
+          `
+        ).hide().fadeIn(1000)
+        deleteDom.fadeOut(2000)
+        // deleteDom.remove()
+      },
+
+      error: function (error) {
+        console.log(error);
+
+        $('.message-box').append(`
+            <div class="alert alert-dismissible alert-danger">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong> 刪除作業（ no. ${comment_id} ）失敗 ! 請再嘗試。</strong>
+            </div>`)
+          .hide().fadeIn(1000)
+      }
+    })
+    
+
+
+  }
+
+
   // event delegation ...
   $('.container').click((e) => { 
-      console.log('container clicked !');
-
-      // edit comment
-    if (e.target.className === "btn btn-primary editComment"){
-      console.log("OK , that's call editComment function");
-      editComment(e)
-    }
-
     // create a new comment
-    if (e.target.id === "submitComment"){
-
+    if (e.target.id === "submitComment") {
       let textarea = $(e.target).parent().prev().find('textarea')
 
       if (textarea.val() === "") {
@@ -238,11 +275,22 @@ $(document).ready( ()=> {
         alert("請輸入主留言。")
       } else {
 
-        console.log("send a main comment !");
         createComment(e)
+        console.log("sent a request of creating new main comment !");
       }
     }
 
+      // edit comment
+    if (e.target.className === "btn btn-primary editComment"){
+      console.log("OK , that's call editComment function");
+      editComment(e)
+    }
+    
+    // delete comment
+    if (e.target.className === "btn btn-danger deleteComment"){
+      console.log("OK , that's call deleteComment function");
+      deleteComment(e)
+    }
 
   })
   

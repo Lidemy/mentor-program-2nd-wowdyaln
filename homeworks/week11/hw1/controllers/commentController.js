@@ -1,3 +1,6 @@
+const sequelize = require('../models').sequelize
+queryInterface = sequelize.getQueryInterface();
+
 const User = require('../models').User
 const Comment = require('../models').Comment
 const SubComment =require('../models/').SubComment
@@ -132,19 +135,18 @@ exports.createSubComment = (req, res)=> {
 // Update
 exports.update = (req, res, next)=>{
 
-    // user_id 必須跟 req.session.id 相同
     console.log(req.body);
     console.log(`current user_id: ${req.session.user_id}`);
     console.log(`current user: ${req.session.username}`);
     console.log(`current user_nk: ${req.session.nickname}`);
     let {comment_id, new_comment} = req.body
-    // console.log(comment_id ,  new_comment);
-
+    
     Comment.findByPk(comment_id, { include: ['User'] })
-            .then(c => {
-                let { username, nickname, id } = c.User.get({ plain: true })
-                console.log(`user: ${username}, ${nickname}, ${id}`)
-
+    .then(c => {
+        let { username, nickname, id } = c.User.get({ plain: true })
+        console.log(`user: ${username}, ${nickname}, ${id}`)
+        
+                // user_id 必須跟 req.session.id 相同才能 update
                 if (id === req.session.user_id){
                     c.update( { content: new_comment } )
                     // res.redirect('/comments')
@@ -160,5 +162,23 @@ exports.update = (req, res, next)=>{
 
 // Delete
 exports.delete = (req, res, next)=>{
+    console.log(req.params);
 
+    // user_id 必須跟 req.session.id 相同才能 delete
+    Comment.findByPk(req.params.comment_id, { include: [{ model: User }, { model: SubComment }] })
+        .then(c => {
+            let author = c.User.get({ plain: true }).id
+            console.log(`author : ${author}`);
+
+            if (author === req.session.user_id){
+
+                c.destroy()   // 下面的子留言也會一併刪除。在 model 的 onDelete 有做設定了
+                .then(() => {
+                    res.send("good, delete OK")
+                })
+
+            } else {
+                res.status(500).send("delete failed ... ...")
+            }
+        })
 }

@@ -21,7 +21,7 @@ router.post('/signup', authController.signup)
 router.put('/edit/comments', commentController.update)
 
 // delete a post
-router.delete('/comments/:id', commentController.delete)
+router.delete('/delete/comments/:comment_id', commentController.delete)
 
 
 

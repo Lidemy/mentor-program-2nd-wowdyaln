@@ -31,6 +31,7 @@ i.fas.fa-plus-circle:hover {
 
 .alert-dismissible {
     position: fixed;
+    z-index: 10;
     /* center the element */
     right: 0;
     left: 0;
@@ -41,4 +42,3 @@ i.fas.fa-plus-circle:hover {
     text-align: center;
     width: 90%;
 }
-
