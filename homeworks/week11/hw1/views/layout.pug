@@ -17,7 +17,7 @@ html(lang="en")
         a.navbar-brand(href="/comments") 留言板
 
         if (currentUser)
-          span.navbar-text 已登入 ✅  Hello! #{currentUser} ( #{nickname} )
+          span.navbar-text 已登入 ✅  Hello! #{currentUser} ( #{currentUserNk} )
         else
           span.navbar-text 未登入 ❌  要登入才能留言
           

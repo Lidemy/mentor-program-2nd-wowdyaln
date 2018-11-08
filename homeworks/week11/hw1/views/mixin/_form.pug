@@ -14,7 +14,7 @@ mixin commentForm(user)
             //- form#submitComment(action='/comments' method='post')
             .modal-body
               label.mb-0(for='main_comment') 主留言
-              textarea.form-control.required(rows='10' name='main_comment')
+              textarea.form-control(rows='10' name='main_comment' required='true')
             .modal-footer
               button#submitComment.btn.btn-primary(type='submit' data-dismiss='modal') 送出
               
@@ -34,13 +34,13 @@ mixin subCommentForm(currentUser, comment_id)
           .card-body
             p.m-2 ( #{currentUser} ) 我想在主留言（ #{comment_id} ）之下，回應 ...
 
-            form(action=`/comments/${comment_id}` method="post")
+            form
   
               .modal-body
                 label.mb-0(for='main_comment') 子留言
                 textarea.form-control(rows='5' name='sub_comment' required='true')
               .modal-footer
                 //- input.comment_id(type='hidden' name='comment_id' value=`${comment_id}`)
-                button#submitSubComment.btn.btn-primary(type='submit') 送出
+                button#submitSubComment.btn.btn-primary(type='submit' data-dismiss='modal' data-comment_id=`${comment_id}`) 送出
               
 

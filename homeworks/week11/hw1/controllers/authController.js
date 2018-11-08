@@ -12,6 +12,8 @@ exports.loginForm = (req, res, next) => {
 
 exports.login = (req, res, next) => {
   console.log(req.body);
+
+  // todo: hash(password) === hashFromDB
   User.find({
     where: {
       username: req.body.username,
@@ -36,18 +38,22 @@ exports.signupForm = (req, res, next) => {
 exports.signup = (req, res, next) => {
   console.log(req.body);
   let { username, nickname, password} = req.body
+
+  // todo: password --> hash function --> hash
   User.create({
               username,
               nickname,
               password })
-      .then( () => {
+      .then((user) => {
         //* Access the session as req.session
-        req.session.username = username
-        req.session.nickname = nickname
+        req.session.username = user.username
+        req.session.nickname = user.nickname
+        req.session.user_id = user.id
         res.redirect('/comments')
       })
       .catch( (err)=> {
         console.log(err);
+        res.status(400).send(err)  // todo: 回覆必須資訊就好了
       })
 }
 

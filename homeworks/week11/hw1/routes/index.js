@@ -18,17 +18,10 @@ router.get('/signup', authController.signupForm)
 router.post('/signup', authController.signup)
 
 // update a post
-router.put('/edit/comments', commentController.update)
+router.put('/comments/:comment_id', commentController.update)
 
 // delete a post
-router.delete('/delete/comments/:comment_id', commentController.delete)
-
-
-
-
-
-
-
+router.delete('/comments/:comment_id', commentController.delete)
 
 
 module.exports = router　
