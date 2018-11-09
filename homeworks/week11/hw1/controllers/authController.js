@@ -2,6 +2,9 @@ const User = require('../models').User
 const Comment = require('../models').Comment
 const SubComment = require('../models').SubComment
 
+const bcrypt = require('bcrypt');
+const saltRounds = 5;
+
 exports.loginForm = (req, res, next) => {
   //* Access the session as req.session
   let username = req.session.username
@@ -11,25 +14,36 @@ exports.loginForm = (req, res, next) => {
 }
 
 exports.login = (req, res, next) => {
-  console.log(req.body);
 
-  // todo: hash(password) === hashFromDB
-  User.find({
+  User.findOne({
     where: {
-      username: req.body.username,
-      password: req.body.password
+      username: req.body.username
+    }
+  }).then( u => {
+    if (!u) {
+      // db 沒有這個使用者
+      // res.status(403).json({ error: "password is wrong or user not found."})
+      res.redirect('/login')
+
+    } else {
+      let match = bcrypt.compareSync(req.body.password, u.password)
+
+      if (match) {
+        // 驗證OK，login
+        req.session.username = u.username
+        req.session.nickname = u.nickname
+        req.session.user_id = u.id
+        res.redirect('/comments')
+
+      } else {
+        // password 錯誤
+        // res.status(403).json({ error: "password is wrong or user not found." })
+        res.redirect('/login')
+      }
     }
   })
-  .then( user => {
-    console.log(user.nickname);
-    req.session.username = user.username  
-    req.session.nickname = user.nickname 
-    req.session.user_id = user.id
-    res.redirect('/comments') 
-  })
-
-  // res.end('test')
 }
+
 
 exports.signupForm = (req, res, next) => {
   res.render('signup')
@@ -37,13 +51,13 @@ exports.signupForm = (req, res, next) => {
 
 exports.signup = (req, res, next) => {
   console.log(req.body);
-  let { username, nickname, password} = req.body
+  let { username, nickname } = req.body
+  let hashedPW = bcrypt.hashSync(req.body.password, saltRounds)
 
-  // todo: password --> hash function --> hash
   User.create({
               username,
               nickname,
-              password })
+              password: hashedPW })
       .then((user) => {
         //* Access the session as req.session
         req.session.username = user.username

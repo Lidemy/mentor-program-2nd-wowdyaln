@@ -7,6 +7,8 @@ const SubComment = require('../models').SubComment
 const usernames = require('../seedData/data').usernames
 const nicknames = require('../seedData/data').nicknames
 const comments = require('../seedData/data').comments
+const bcrypt = require('bcrypt');
+
 
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
@@ -95,13 +97,16 @@ async function insertSubComments(interface, num){
 
 async function insertUsers(interface){
   const nicks = shuffle(nicknames)
+  const saltRounds = 5;
+  const pw = '123'
   let userAry = []
-
+  
   usernames.forEach((u, index) => {
+    let hashedPW = bcrypt.hashSync(pw, saltRounds)
     let user = {
       username: u,
       nickname: nicks[index],
-      password: '123',
+      password: hashedPW,
       createdAt: new Date(),
       updatedAt: new Date(),
     }
