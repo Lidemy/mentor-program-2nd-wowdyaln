@@ -3,7 +3,9 @@ const express = require('express')
 const router = express.Router()
 const commentController = require('../controllers/commentController')
 const authController = require('../controllers/authController')
+const urlController = require('../controllers/urlController')
 
+// * message Board
 // show all posts
 router.get('/comments', commentController.showPage )
 // create a new post
@@ -22,6 +24,15 @@ router.put('/comments/:comment_id', commentController.update)
 
 // delete a post
 router.delete('/comments/:comment_id', commentController.delete)
+
+
+// * shorten Url
+router.get('/stnurl', urlController.showPage)
+router.post('/stnurl', urlController.createStnurl)
+router.get('/stnurl/:short', urlController.redirect)
+
+
+
 
 
 module.exports = router　

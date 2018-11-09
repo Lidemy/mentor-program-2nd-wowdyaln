@@ -1,0 +1,55 @@
+extends layout
+include mixin/_titles
+
+block header
+
+  nav.navbar.fixed-top.navbar-expand-lg.navbar-dark.bg-primary
+    a.navbar-brand(href="/stnurl") 短網址
+
+    if (currentUser)
+      span.navbar-text 已登入 ✅  Hello! #{currentUser} ( #{currentUserNk} )
+      
+
+    else
+      span.navbar-text 未登入 ❌  要登入才能建立短網址
+      
+    button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation")
+      span.navbar-toggler-icon
+    .collapse.navbar-collapse#navbarColor01
+      ul.navbar-nav.mr-auto
+        +titles()
+        
+
+        if (currentUser)
+          .d-flex.justify-content-center
+            li.nav-item
+              a.nav-link(href='/logout')
+                i.fas.fa-sign-out-alt.fa-2x(style="color:green")
+
+        else
+          .d-flex.justify-content-center
+            li.nav-item
+              a.nav-link(href="/login")
+                i.fas.fa-sign-in-alt.fa-2x(style="color:green")
+            
+
+  .container
+    if (currentUser)
+
+      .input-group.m-5
+        input.form-control(type='text', placeholder="輸入網址", aria-label="Recipient's username", aria-describedby='button-shorten')
+        .input-group-append
+          button#button-shorten.btn.btn-outline-primary(type='button') 變短
+
+      .input-group.m-5
+        input.form-control(type='text', placeholder="輸入短網址", aria-label="Recipient's username", aria-describedby='button-redirect')
+        .input-group-append
+          button#button-redirect.btn.btn-outline-primary(type='button') GO !
+
+
+    else
+      
+      .input-group.m-5
+        input.form-control(type='text', placeholder="輸入短網址", aria-label="Recipient's username", aria-describedby='button-redirect')
+        .input-group-append
+          button#button-redirect.btn.btn-outline-primary(type='button') GO !

@@ -63,6 +63,7 @@ exports.showPage = async (req, res, next)=> {
 												currentUserNk,
 												commentsObj: comments,
 												currentPage: currentPage,
+												title: "Minty Board",
 												pages } )
 }
 
