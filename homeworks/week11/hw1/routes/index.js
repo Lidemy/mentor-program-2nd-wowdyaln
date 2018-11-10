@@ -28,7 +28,7 @@ router.delete('/comments/:comment_id', commentController.delete)
 
 // * shorten Url
 router.get('/stnurl', urlController.showPage)
-router.post('/stnurl', urlController.createStnurl)
+router.post('/stnurl', urlController.createStnurl, urlController.showPage)
 router.get('/stnurl/:short', urlController.redirect)
 
 

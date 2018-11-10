@@ -1,5 +1,6 @@
 extends layout
 include mixin/_titles
+include mixin/_newUrl
 
 block header
 
@@ -34,20 +35,22 @@ block header
             
 
   .container
+    if(shortUrl)
+      +shortUrl(originUrl, shortUrl, createdAt)
+
 
     form
         .input-group.m-5
-          input.form-control(type='text' placeholder="輸入短網址" aria-label="Recipient's username" aria-describedby='button-redirect' required)
+          input.form-control(type='text' placeholder="輸入已知的 6 bit 短網址" aria-describedby='button-redirect' required)
           .input-group-append
-            button#button-redirect.btn.btn-outline-primary(type='submit') GO !
+            button#button-redirect.btn.btn-outline-primary(type='button') GO !
 
     if (currentUser)
 
-      form
+      form(action='/stnurl' method='post')
         .input-group.m-5
-          input.form-control(type='text' placeholder="輸入網址" aria-label="Recipient's username" aria-describedby='button-shorten' required)
+          input.form-control(name='originUrl' type='text' placeholder="輸入網址。請包括 http:// 完整網址" aria-describedby='button-shorten' required)
           .input-group-append
             button#button-shorten.btn.btn-outline-primary(type='submit') 變短
 
-    else
       

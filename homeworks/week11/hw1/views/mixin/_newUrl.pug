@@ -1,0 +1,6 @@
+mixin shortUrl(orgUrl, sUrl, time)
+
+	h3 您的短網址：
+		a.w-auto.m-3(href=`${orgUrl}`, target="_blank") http://localhost/stnurl/#{sUrl}
+	p createdAt : #{time}
+			//- - let { shortUrl ,originUrl, user_id, updatedAt, createdAt }

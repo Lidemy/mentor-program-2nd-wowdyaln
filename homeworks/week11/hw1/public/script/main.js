@@ -366,4 +366,34 @@ $(document).ready( ()=> {
     if (!url) return
     console.log(url);
   })
+
+
+  // * get ->/stnurl/:short
+  $('#button-redirect').click( (e)=> {
+    console.log("redirect gogo");
+    let shortUrl = $(e.target).parent().prev().val()
+    console.log(shortUrl);
+
+
+    $.ajax({
+      type: "GET",
+      url: `/stnurl/${shortUrl}`,
+      // data: {
+      //   shortUrl
+      // },
+      success: function () {
+        console.log("update success!")
+        location.href = `/stnurl/${shortUrl}`
+      },
+      error: function () {
+        $('.message-box').append(`
+            <div class="alert alert-dismissible alert-danger">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong> 查詢失敗 ! </strong>
+            </div>`)
+          .hide().fadeIn(1000)
+      }
+    })
+  })
+
 })
