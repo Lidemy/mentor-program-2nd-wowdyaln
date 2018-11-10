@@ -1,7 +1,5 @@
 
 
-
-
 exports.showPage = (req, res)=> {
   let currentUser = req.session.username
   let currentUserNk = req.session.nickname

@@ -34,22 +34,20 @@ block header
             
 
   .container
+
+    form
+        .input-group.m-5
+          input.form-control(type='text' placeholder="輸入短網址" aria-label="Recipient's username" aria-describedby='button-redirect' required)
+          .input-group-append
+            button#button-redirect.btn.btn-outline-primary(type='submit') GO !
+
     if (currentUser)
 
-      .input-group.m-5
-        input.form-control(type='text', placeholder="輸入網址", aria-label="Recipient's username", aria-describedby='button-shorten')
-        .input-group-append
-          button#button-shorten.btn.btn-outline-primary(type='button') 變短
-
-      .input-group.m-5
-        input.form-control(type='text', placeholder="輸入短網址", aria-label="Recipient's username", aria-describedby='button-redirect')
-        .input-group-append
-          button#button-redirect.btn.btn-outline-primary(type='button') GO !
-
+      form
+        .input-group.m-5
+          input.form-control(type='text' placeholder="輸入網址" aria-label="Recipient's username" aria-describedby='button-shorten' required)
+          .input-group-append
+            button#button-shorten.btn.btn-outline-primary(type='submit') 變短
 
     else
       
-      .input-group.m-5
-        input.form-control(type='text', placeholder="輸入短網址", aria-label="Recipient's username", aria-describedby='button-redirect')
-        .input-group-append
-          button#button-redirect.btn.btn-outline-primary(type='button') GO !

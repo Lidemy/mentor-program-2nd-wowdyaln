@@ -346,7 +346,24 @@ $(document).ready( ()=> {
       deleteComment(e)
       console.log("sent a request of deleting comment !");
     }
+    
   })
 
-  // 確定 username 可以使用 // todo:
+  // 確定 username 沒有重複可以使用 // todo:
+  
+  
+  // 欄位必填 alert // todo:
+  
+
+
+
+
+  // * post -> /stnurl
+  $('#button-shorten').click( (e)=> {
+    // e.preventDefault()
+    console.log("#button-shorten gogogo");
+    let url = $(e.target).parent().prev().val()
+    if (!url) return
+    console.log(url);
+  })
 })
