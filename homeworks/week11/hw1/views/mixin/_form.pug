@@ -41,6 +41,6 @@ mixin subCommentForm(currentUser, comment_id)
                 textarea.form-control(rows='5' name='sub_comment' required='true')
               .modal-footer
                 //- input.comment_id(type='hidden' name='comment_id' value=`${comment_id}`)
-                button#submitSubComment.btn.btn-primary(type='submit' data-dismiss='modal' data-comment_id=`${comment_id}`) 送出
+                button.submitSubComment.btn.btn-primary(type='submit' data-dismiss='modal' data-comment_id=`${comment_id}`) 送出
               
 

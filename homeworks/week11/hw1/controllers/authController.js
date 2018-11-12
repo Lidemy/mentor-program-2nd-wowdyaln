@@ -55,20 +55,21 @@ exports.signup = (req, res, next) => {
   let hashedPW = bcrypt.hashSync(req.body.password, saltRounds)
 
   User.create({
-              username,
-              nickname,
-              password: hashedPW })
-      .then((user) => {
-        //* Access the session as req.session
-        req.session.username = user.username
-        req.session.nickname = user.nickname
-        req.session.user_id = user.id
-        res.redirect('/comments')
-      })
-      .catch( (err)=> {
-        console.log(err);
-        res.status(400).send(err)  // todo: 回覆必須資訊就好了
-      })
+      username,
+      nickname,
+      password: hashedPW 
+    })
+    .then((user) => {
+      //* Access the session as req.session
+      req.session.username = user.username
+      req.session.nickname = user.nickname
+      req.session.user_id = user.id
+      res.redirect('/comments')
+    })
+    .catch( (err)=> {
+      console.log(err);
+      res.status(400).send(err)  // todo: 回覆必須資訊就好了
+    })
 }
 
 

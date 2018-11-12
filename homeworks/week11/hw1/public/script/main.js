@@ -302,7 +302,7 @@ $(document).ready( ()=> {
   // * event delegation ...
   $('.container').click((e) => { 
     // create a new comment
-    if (e.target.id === "submitComment") {
+    if (e.target.id === "submitComment") { 
       let textarea = $(e.target).parent().prev().find('textarea')
 
       if (textarea.val() === "") {
@@ -316,7 +316,7 @@ $(document).ready( ()=> {
     }
 
     // create a sub comment
-    if (e.target.id === "submitSubComment") {
+    if (e.target.className === "submitSubComment btn btn-primary") {  //! 一個頁面只能有一個 id 
       let textarea = $(e.target).parent().prev().find('textarea')
       console.log("submit subComment !!!");
 
@@ -353,11 +353,9 @@ $(document).ready( ()=> {
   
   
   // 欄位必填 alert // todo:
+
+
   
-
-
-
-
   // * post -> /stnurl
   $('#button-shorten').click( (e)=> {
     // e.preventDefault()

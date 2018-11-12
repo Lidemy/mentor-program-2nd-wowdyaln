@@ -28,13 +28,13 @@ exports.showPage = (req, res)=> {
 }
 
 exports.createStnurl = (req, res)=> {
-  var addOne =  // todo: temp 刪除
-    (function (n) {
-      return function () {
-        n += 1;
-        return n.toString();
-      }
-    }(123468));
+  // var addOne =  // todo: temp 刪除
+  //   (function (n) {
+  //     return function () {
+  //       n += 1;
+  //       return n.toString();
+  //     }
+  //   }(123468));
   
   // 
   function genUrl(orgUrl, creator) {
