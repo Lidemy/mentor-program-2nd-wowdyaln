@@ -5,8 +5,6 @@ const bodyParser = require('body-parser')
 
 // router 使用 exprss.Router ，另外引入
 const routes = require('./routes/index')
-const helpers = require('./helpers')
-const errorHandlers = require('./handlers/errorHandlers')
 
 // create our Express app
 const app = express()
@@ -34,41 +32,9 @@ app.use(session({
 }));
 
 
-
-/*
-在調用res.render的時候，express合併（merge）了3處的結果後傳入要渲染的模板
-優先順序：res.render傳入的對象> res.locals對象> app.locals對象
-所以app.locals和res.locals幾乎沒有區別，
-使用上的區別在於：app.locals上通常掛載常量信息（如博客名、描述、作者信息）
-res.locals上通常掛載變量信息，即每次請求可能的值都不一樣（如請求者信息，res.locals.user = req.session.user）
-*/
-// http://expressjs.com/en/4x/api.html#res.locals
-app.use((req, res, next) => {
-  res.locals.h = helpers
-  // res.locals.flashes = req.flash()
-  res.locals.user = req.user || null
-  res.locals.currentPath = req.path
-  next()
-})
-
-
 // After allllll that above middleware, we finally handle our own routes!
 app.use('/', routes)
 
-// If that above routes didnt work, we 404 them and forward to error handler
-// app.use(errorHandlers.notFound)
-
-// One of our error handlers will see if these errors are just validation errors
-// app.use(errorHandlers.flashValidationErrors)
-
-// Otherwise this was a really bad error we didn't expect! Shoot eh
-// if (app.get('env') === 'development') {
-//   /* Development Error Handler - Prints stack trace */
-//   app.use(errorHandlers.developmentErrors)
-// }
-
-// production error handler
-// app.use(errorHandlers.productionErrors)
 
 // done!
 module.exports = app

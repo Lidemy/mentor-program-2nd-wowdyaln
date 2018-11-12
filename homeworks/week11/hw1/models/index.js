@@ -5,7 +5,7 @@ const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env]; // 有3種常用環境 product, develop, test
+const config = require(__dirname + '/../config/config.json')[env]; // 有3種常用環境 development, development, test
 const db = {};
 
 let sequelize;

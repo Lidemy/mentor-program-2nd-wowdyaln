@@ -217,7 +217,7 @@ $(document).ready( ()=> {
     let comment_id = e.target.dataset.comment_id
     let new_comment = $(e.target).parent().prev().children(':last-child').val()
 
-    let panel = $(e.target).closest('.card.border-primary.m-3').find('.card-body').find('h5')
+    let panel = $(e.target).closest('.card.border-primary.m-3').find('.card-body').find('h5').first()
     console.log(panel);
     // 從前端拿到資料，傳到後端
 
@@ -355,7 +355,7 @@ $(document).ready( ()=> {
   // 欄位必填 alert // todo:
 
 
-  
+
   // * post -> /stnurl
   $('#button-shorten').click( (e)=> {
     // e.preventDefault()
