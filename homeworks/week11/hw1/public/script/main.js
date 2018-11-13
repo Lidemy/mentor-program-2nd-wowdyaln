@@ -117,7 +117,7 @@ $(document).ready( ()=> {
                             <textarea class="form-control" rows="5" name="sub_comment" required="true"></textarea>
                           </div>
                           <div class="modal-footer">
-                            <button class="btn btn-primary" id="submitSubComment" type="submit" data-comment_id=${id}>送出</button>
+                            <button class="submitSubComment btn btn-primary" type="submit" data-comment_id=${id}>送出</button>
                           </div>
                       </form>
                   </div>
