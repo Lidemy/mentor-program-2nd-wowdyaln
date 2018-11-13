@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.3/minty/bootstrap.min.css" integrity="sha384-Qt9Hug5NfnQDGMoaQYXN1+PiQvda7poO7/5k4qAmMN6evu0oDFMJTyjqaoTGHdqf" crossorigin="anonymous")
+    title Login
+
+  body.mt-5
+    .container.col-8
+      a.btn.btn-outline-primary.btn-lg(href="comments" role="button") 前往留言板
+      a.btn.btn-outline-warning.btn-lg.ml-5(href="/signup" role="button") 註冊
+      .card.border-primary.mt-3
+        .card-header
+          h1.text-center 登入
+
+          form( method="post")
+            .card-body
+              .form-row
+                .col-md-6.mb-3
+                  label(for="username") username
+                  input.form-control#username(type="text" name="username" placeholder="使用者" required)
+                .col-md-6.mb-3
+                  label(for="password") password
+                  input.form-control#password(type="text" name="password" placeholder="密碼" required)
+                 
+              button.btn.btn-primary.btn-block(type="submit") Log in

@@ -1,0 +1,25 @@
+mixin pages(current_page, pages_count)
+  //- - let current_page = 10
+  - let i = 1
+  //- - let pages_count=10
+  - let prev = current_page > 1 ? current_page-1 : 1
+  - let next = current_page < pages_count ? current_page+1 : pages_count
+
+  nav
+    ul.pagination.justify-content-center
+      li.page-item
+        a.page-link(href=`/comments/?page=${prev}` )
+          span(aria-hidden='true') &laquo;
+
+      while (i <= pages_count)
+        if ( i == current_page )
+          li.page-item.active
+            a.page-link(href=`/comments/?page=${i}`) #{i++}
+
+        else
+          li.page-item
+            a.page-link(href=`/comments/?page=${i}`) #{i++}
+
+      li.page-item
+        a.page-link(href=`/comments/?page=${next}`)
+          span(aria-hidden='true') &raquo;

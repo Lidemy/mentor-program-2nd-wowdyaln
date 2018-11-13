@@ -1,0 +1,19 @@
+mixin allSubComments(mainAuthor, subs)
+  
+  each sub in subs
+    - let { sub_userId, sub_user, sub_nk, content, createdAt } = sub
+
+    .row.justify-content-center
+      if ( sub_userId === mainAuthor.id)
+        .card.border-danger.col-8.m-1
+          .card-body
+            h4.card-title.text-center Author: #{sub_user} （ #{sub_nk} ）：
+            p.card-text reply at: #{createdAt}
+            p.card-text #{content}
+
+      else
+        .card.border-warning.col-10.m-1
+          .card-body
+            h5.card-title #{sub_user} （ #{sub_nk} ）：
+            p.card-text reply at: #{createdAt}
+            p.card-text #{content}

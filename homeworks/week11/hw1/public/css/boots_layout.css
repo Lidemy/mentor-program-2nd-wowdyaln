@@ -1,0 +1,59 @@
+.container {
+    padding-top: 2em;
+}
+
+
+.row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.card.border-primary {
+  border: 3px solid;
+}
+
+
+i.fas.fa-plus-circle {
+  color: #60d245;
+  background-image: -webkit-linear-gradient(#b9ffca 0%, #80e067 100%);
+  background-image: linear-gradient(#b9ffca 0%, #80e067 100%);
+  position: fixed;
+  top: 50%;
+  left: 3%;
+  z-index: 10;
+  border-radius: 50%;
+  font-size: 42px;
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.66);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.28);
+  transition: .3s;
+}
+
+i.fas.fa-plus-circle:hover {
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.28);
+    transform: translateY(-5px);
+}
+
+.alert-dismissible {
+    position: fixed;
+    z-index: 10;
+    /* center the element */
+    right: 0;
+    left: 0;
+    margin-right: auto;
+    margin-left: auto;
+    /* center the element */
+    bottom: 0;
+    text-align: center;
+    width: 90%;
+}
+
+.far.fa-comments {
+    font-weight: bold;
+    transition: .2s;
+}
+
+.far.fa-comments:hover {
+    font-size: 1.1em;
+    font-weight: normal;
+    /* transition: .3s; */
+}

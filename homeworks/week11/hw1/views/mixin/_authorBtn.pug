@@ -1,0 +1,42 @@
+
+mixin EditDeleteBtn(content, id)
+
+  .d-flex.justify-content-around
+    div
+      // Button trigger modal
+      button.btn.btn-outline-warning(type='button' data-toggle='modal' data-target=`#editModal${id}`) 編輯主留言
+      // Modal
+      .modal.fade(id=`editModal${id}` tabindex='-1' role='dialog' aria-labelledby='editModalLabel' aria-hidden='true')
+        .modal-dialog(role='document')
+          .modal-content
+            .modal-header
+              h5#editModalLabel.modal-title 編輯 主留言 （ #{id} ）
+              button.close(type='button' data-dismiss='modal' aria-label='Close')
+                span(aria-hidden='true') &times;
+
+            form
+              .modal-body
+                label.mb-0(for='main_comment') 主留言
+                textarea.form-control(rows='2' name='main_comment' required='') #{content}
+              .modal-footer
+                button.btn.btn-primary.editComment(type='button'  data-dismiss='modal' data-comment_id=`${id}`) 送出
+                button.btn.btn-secondary(type='button' data-dismiss='modal') 取消
+    div
+      // Button trigger modal
+      button.btn.btn-outline-danger(type='button' data-toggle='modal' data-target=`#deleteModal${id}`) 刪除主留言
+      // Modal
+      .modal.fade(id=`deleteModal${id}` tabindex='-1' role='dialog' aria-labelledby='deleteModalLabel' aria-hidden='true')
+        .modal-dialog(role='document')
+          .modal-content
+            .modal-header
+              h5#deleteModalLabel.modal-title 確定刪除 主留言？ （ #{id} ）
+              button.close(type='button' data-dismiss='modal' aria-label='Close')
+                span(aria-hidden='true') &times;
+            form(action=`/comments/${id}`  method='delete')
+              // <form action=./action/delete_comment.php method=post>
+              .modal-body
+                p #{content}
+                span(aria-hidden='true') 子留言也會一併刪除。刪除之後無法復原，確定嗎？
+              .modal-footer
+                button.btn.btn-danger.deleteComment(type='submit' data-dismiss='modal' data-comment_id=`${id}`) 確定
+                button.btn.btn-info(type='button' data-dismiss='modal') 取消
