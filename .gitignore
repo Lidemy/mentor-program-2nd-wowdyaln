@@ -1,3 +1,7 @@
+#webpack
+dist/
+
+#
 node_modules/
 my_stuff
 JS101
