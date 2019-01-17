@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './TwitForm.css';
+var classNames = require('classnames');
 
 const Checkbox = (props)=> {
   const {title, value, checked, onChange} = props
@@ -85,8 +86,11 @@ class TwitForm extends Component {
       [e.target.name]: e.target.checked
     })
     //* 15 秒，auto save 一次。
-    !this.state.autoSave ? this.runAutoSave(15000) : this.stopAutoSave()
-    console.log("state :", this.state);
+    if (!this.state.autoSave) {
+      this.runAutoSave(15000)
+    } else {
+      this.stopAutoSave()
+    }
   }
 
 
@@ -111,26 +115,16 @@ class TwitForm extends Component {
     // console.log(this.state);
     const { name, address, other, gender, city, time } = this.state
 
-    localStorage.setItem('nameF', name);
-    localStorage.setItem('addressF', address);
-    localStorage.setItem('otherF', other);
-    localStorage.setItem('genderF', gender);
-    localStorage.setItem('cityF', city);
-
-    let timeString = JSON.stringify(time)
-    localStorage.setItem('timeF', timeString)
+    const data = { name, address, other, gender, city, time }
+    let formString = JSON.stringify(data)
+    localStorage.setItem('formData', formString)
     console.log("save to localStorage. ");
   }
 
   getFromLocalStorage() {
-    this.setState({
-      name: localStorage.getItem('nameF'),
-      address: localStorage.getItem('addressF'),
-      other: localStorage.getItem('otherF'),
-      gender: localStorage.getItem('genderF'),
-      city: localStorage.getItem('cityF'),
-      time: JSON.parse(localStorage.getItem('timeF')),
-    })
+    const formFromStorage = JSON.parse(localStorage.getItem('formData'))
+    const { name, address, other, gender, city, time } = formFromStorage
+    this.setState({ name, address, other, gender, city, time })
   }
 
   clearLocalStorage() {
@@ -150,16 +144,23 @@ class TwitForm extends Component {
   render() {
     const { name, address, other, gender, city, time } = this.state
 
-    let nameClass, addressClass, timeClass, genderClass
-    nameClass = addressClass = timeClass = genderClass = "qRequired"
-
-    function isFalse(v, classname) {
-      if (v == false) {
-        classname += " warning"
-      }
-      return classname
-    }
-
+    let nameClass = classNames({
+      "qRequired": true,
+      "warning": !name
+    })
+    let addressClass = classNames({
+      "qRequired": true,
+      "warning": !address
+    })
+    let timeClass = classNames({
+      "qRequired": true,
+      "warning": time == false
+    })
+    let genderClass = classNames({
+      "qRequired": true,
+      "warning": !gender
+    })
+    
     function warningMSG(v){
       if (v == false) {
         return (
@@ -178,7 +179,7 @@ class TwitForm extends Component {
             <div className="sheet__discription">認識新朋友，也為自己不需要的東西找到新主人！《推友來玩耍！推特二手市集》是一個「推聚」+「二手交換市集」 各式興趣或想法都會在這裡集結 無論你想討論公共議題、交換二手書 還是要出清你莫名其妙的購物欲 都．可．以 ！</div>
             <p className="sheet__required">* 必填</p>
             <form onSubmit={this.handleSubmit}>
-              <div className={isFalse(name, nameClass)}>
+              <div className={nameClass}>
                 <div className="qRequired__name" data-star="*">姓名</div>
                 <div className="inputSection">
                   <input className="inputSection__text"
@@ -190,7 +191,7 @@ class TwitForm extends Component {
                 </div>
               </div>
               
-              <div className={isFalse(address, addressClass)}>
+              <div className={addressClass}>
                 <div className="qRequired__name" data-star="*">地址</div>
                 <div className="inputSection">
                   <input className="inputSection__text"
@@ -213,7 +214,7 @@ class TwitForm extends Component {
                 </div>
               </div>
 
-              <div className={isFalse(gender, genderClass)}>
+              <div className={genderClass}>
                 <div className="qRequired__name" data-star="*">性別</div>
                 <div className="inputSection inputSection__text">
                   <input type="radio" name="gender" id="male" value="male" 
@@ -243,25 +244,25 @@ class TwitForm extends Component {
               </div>
 
 
-              <div className={isFalse(time, timeClass)}>
+              <div className={timeClass}>
                 <div className="qRequired__name" data-star="*">時段</div>
                 <div className="inputSection inputSection__text">
                   <Checkbox 
                   title="早上" 
                   value="morning" 
-                  checked={Array.isArray(time) && time.indexOf("morning") !== -1} 
+                  checked={ time.indexOf("morning") !== -1} 
                   onChange={this.handleOnCheckbox}
                 />
                 <Checkbox 
                   title="中午" 
-                  value="noon" 
-                  checked={Array.isArray(time) && time.indexOf("noon") !== -1} 
+                  value="noon"
+                  checked={ time.indexOf("noon") !== -1} 
                   onChange={this.handleOnCheckbox}
                 />
                 <Checkbox 
                   title="晚上" 
                   value="evening" 
-                  checked={Array.isArray(time) && time.indexOf("evening") !== -1} 
+                  checked={ time.indexOf("evening") !== -1} 
                   onChange={this.handleOnCheckbox}
                 />
                 </div>
